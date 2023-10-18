@@ -10,9 +10,9 @@ Disclaimer regarding the choice of Hardware: Although there is some hardware tha
 I decided to use the following items, because I had (at least some of them) already in my drawer. 
 
 * plexiglass sheet
-* Raspberry Pi Zero W
+* Arduino Nano
 * wood 
-* WS2812 5050 RGB LEDs
+* WS2812 5050 RGB LEDs (Neopixel)
 	
 
 # Software
@@ -34,6 +34,23 @@ The location of this file:
 	
 Idea on what/how to read from the log file I got from [this repository][2].
 	
+### Teams Presence status
+Using the Log File, 
+this is the List of possible Teams Status that are available:
+
+| StatusName in Teams | StatusName in Log File  |  				Color 					|
+|:-------------------:|:-----------------------:|:-------------------------------------:|
+|    Available        |        Available        | 	:green_heart: green :green_heart: 	|
+|    Busy             |     Busy                | 	 :heart: red :heart:			    |
+|    In a meeting     | InAMeeting  			|	 :heart: red :heart:			    |
+|    In a call        |     OnThePhone          | 	 :heart: red :heart:			    |
+|    Do not disturb   | DoNotDisturb ,Presenting| 	 :heart: red :heart:			    |
+|    Be right back    |                         | :yellow_heart: yellow :yellow_heart:	|
+| 	 Away             |		Away				| :yellow_heart: yellow :yellow_heart:	|
+|	 Offline          |		Offline				| :yellow_heart: yellow :yellow_heart:	|
+| 		N/A			  | Unknown,NewActivity,ConnectionError,NoNetwork		| ?		 	|
+
+
 
 
 # Reference / Link Collection

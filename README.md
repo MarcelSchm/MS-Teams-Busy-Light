@@ -24,7 +24,7 @@ First you need the software to run the Teams presence analyse script. For instal
 	winget install -e --id AutoHotkey.AutoHotkey
 
 
-Download the [Autohotkey Script](Read File.ahk) and run it.
+Download the [Autohotkey Script](Read%20File.ahk) and run it.
 
 ## How to get the presence status
 

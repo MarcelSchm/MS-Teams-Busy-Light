@@ -45,7 +45,7 @@ this is the List of possible Teams Status that are available:
 |    In a meeting     | InAMeeting  			|	 :heart: red :heart:			    |
 |    In a call        |     OnThePhone          | 	 :heart: red :heart:			    |
 |    Do not disturb   | DoNotDisturb ,Presenting| 	 :heart: red :heart:			    |
-|    Be right back    |                         | :yellow_heart: yellow :yellow_heart:	|
+|    Be right back    |     BeRightBack         | :yellow_heart: yellow :yellow_heart:	|
 | 	 Away             |		Away				| :yellow_heart: yellow :yellow_heart:	|
 |	 Offline          |		Offline				| :yellow_heart: yellow :yellow_heart:	|
 | 		N/A			  | Unknown,NewActivity,ConnectionError,NoNetwork		| ?		 	|

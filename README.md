@@ -13,7 +13,10 @@ I decided to use the following items, because I had (at least some of them) alre
 * Arduino Nano
 * wood 
 * WS2812 5050 RGB LEDs (Neopixel)
-	
+
+I created a CAD Modell of it, using Catia. Besides the Part Modell itself, I created the drawing of the plexiglass and 
+wooden stand, as well as their PDF exports, so you don't need Catia to open them. Here you can see a first rendering of the model: 
+![rendered](images/rendered.bmp)
 
 # Software
 
@@ -60,6 +63,19 @@ this is the List of possible Teams Status that are available:
 | 		N/A			  | Unknown,NewActivity,ConnectionError,NoNetwork		| ?		 	|
 
 
+# Results and Assembly
+
+## Assembly 
+After creating the wooden stand, plexiglas and soldering of the electronics, you need to put everything together. should be selfexplaining, but here have a look of my assembly:
+![assembly](images/assembly_and_glue.jpg)
+You can see here, that I prepared to glue a thin layer of vaneer wood to the  backside, too cover the electronics. 
+
+## Results
+Here you can find some pictures of the current state / final version of the busy light:
+![red_no_engrave](images/red_without_Engraving.jpg)
+![green_no_engrave](images/green_without_engraving.jpg)
+![red_engrave](images/red_with_engraving.jpg)
+![green_engrave](images/green_with_engraving.jpg)
 
 
 # Reference / Link Collection

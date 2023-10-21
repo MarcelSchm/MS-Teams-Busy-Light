@@ -34,33 +34,33 @@ LogFile.Close()
 ;MsgBox " Last Status: " StatusArray[StatusArray.Length]
 switch StatusArray[StatusArray.Length]
     {
-    case "Available":
-        ;MsgBox "Available was read successfully"
-    case "Busy":
-        ;MsgBox "Busy was read successfully"
-    case "InAMeeting":
-        ;MsgBox "InAMeeting was read successfully"
+	case "Available":
+		;MsgBox "Available was read successfully"
+	case "Busy":
+		;MsgBox "Busy was read successfully"
+	case "InAMeeting":
+		;MsgBox "InAMeeting was read successfully"
 	case "OnThePhone":
-        ;MsgBox "OnThePhone was read successfully"
+		;MsgBox "OnThePhone was read successfully"
 	case "DoNotDisturb":
-        ;MsgBox "DoNotDisturb was read successfully"
+		;MsgBox "DoNotDisturb was read successfully"
 	case "BeRightBack":
-        ;MsgBox "BeRightBack was read successfully"
-    case "Presenting":
-        ;MsgBox "Presenting was read successfully"
+		;MsgBox "BeRightBack was read successfully"
+	case "Presenting":
+		;MsgBox "Presenting was read successfully"
 	case "Away":
-        ;MsgBox "Away was read successfully"
+		;MsgBox "Away was read successfully"
 	case "Offline":
-        ;MsgBox "Offline was read successfully"
+		;MsgBox "Offline was read successfully"
 	case "Unknown":
-       ; MsgBox "Unknown was read successfully"
-    case "NewActivity":
-        ;MsgBox "NewActivity was read successfully"
+		;MsgBox "Unknown was read successfully"
+	case "NewActivity":
+		;MsgBox "NewActivity was read successfully"
 	case "ConnectionError":
-        ;MsgBox "ConnectionError was read successfully"
+		;MsgBox "ConnectionError was read successfully"
 	case "NoNetwork":
-        ;MsgBox "NoNetwork was read successfully"
-    default:  ; Not Listed Status yet
+		;MsgBox "NoNetwork was read successfully"
+	default:  ; Not Listed Status yet
 		MsgBox "AutoHotkey Teams Presence Status Script: The following Status is not yet known and needs to be added to the autohotkey Script: " StatusArray[StatusArray.Length]
     }
 Sleep 10000	

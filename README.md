@@ -27,6 +27,9 @@ First you need the software to run the Teams presence analyse script. For instal
 	winget install -e --id AutoHotkey.AutoHotkey
 
 
+Now you need a serial tool, that is able to connect to the arduino and send the color change commands. For this, you need to have plink (a command-line interface to the PuTTY back ends). I put the latest 64-bit x86 version in the repo, but you can download it in case you need another one [from here][9].
+
+
 Download the [Autohotkey Script](Read%20File.ahk) and run it.
 
 ## How to get the presence status
@@ -92,7 +95,7 @@ was just added to this file for the complete Link list, I used for inspiration, 
 [6]: <https://learn.microsoft.com/en-us/graph/api/presence-get?view=graph-rest-beta&tabs=http#code-try-1>
 [7]: <https://www.hackster.io/benedikt-hubschen/office-busylight-1a8e30>
 [8]: <https://teamsqueen.com/2021/08/19/a-busylight-with-microsoft-teams/>
-
+[9]: <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>
 
 
 

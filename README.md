@@ -18,6 +18,10 @@ I created a CAD Modell of it, using Catia. Besides the Part Modell itself, I cre
 wooden stand, as well as their PDF exports, so you don't need Catia to open them. Here you can see a first rendering of the model: 
 ![rendered](images/rendered.bmp)
 
+## Electronics
+Find the Wiring Diagram of the Neopixel RGB Strips and the Arduino below. They will fit to the bottom of the wooden stand. 
+![wiring diagram](images/wiring%20diagram.png)
+
 # Software
 
 ## Installation

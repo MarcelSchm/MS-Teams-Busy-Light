@@ -1,5 +1,3 @@
-
-
 #include <Adafruit_NeoPixel.h>
 #ifdef __AVR__
 #include <avr/power.h>  // Required for 16 MHz Adafruit Trinket
@@ -25,6 +23,7 @@ Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
 enum busyStatus {
   RED,
   GREEN,
+  YELLOW,
   CALL,
   FREE,
   UNDEFINED
@@ -33,6 +32,7 @@ enum busyStatus {
 busyStatus resolvebusyStatusString(String input) {
   if (input == "RED") { return RED; }
   if (input == "GREEN") { return GREEN; }
+  if (input == "YELLOW") { return YELLOW; }
   else {
     return UNDEFINED;
   }
@@ -75,6 +75,12 @@ void loop() {
         {
           //FadePixelFromRedToGreen();
           SetAllPixelToColor(0, 255, 0);
+          break;
+        }
+        case YELLOW:
+        {
+          //FadePixelFromRedToGreen();
+          SetAllPixelToColor(255, 200, 0); //otherwise the LEDs look more greenish
           break;
         }
       case UNDEFINED:

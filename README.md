@@ -10,7 +10,7 @@ Disclaimer regarding the choice of Hardware: Although there is some hardware tha
 I decided to use the following items, because I had (at least some of them) already in my drawer. 
 
 * plexiglass sheet
-* Arduino Nano
+* Arduino Nano (Chip: Atmel atmega328p Xplained mini)
 * wood 
 * WS2812 5050 RGB LEDs (Neopixel)
 

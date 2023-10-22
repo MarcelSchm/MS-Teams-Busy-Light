@@ -4,12 +4,12 @@
 DetectHiddenWindows true
 if not A_IsAdmin
 {
-  Run '*RunAs "' A_ScriptFullPath '" /restart'
+  Run '*RunAs "' A_ScriptFullPath '" /restart' ;Admin rights needed, so that ControlSendText will work in Hidden Mode.
   Exit
 }
+
 PlinkPath := A_WorkingDir "\plink.exe" ; if you change location of plink, put path here
 COMPORT := " -serial COM4" ;change COMPORT of Arduino here
-CMDWinName := "cmd.exe" ; Name of cmd.exe in WIN11. Might Need to be changed depending on OS"WindowsTerminal.exe" 
 
 If not FileExist(PlinkPath) 
 {
@@ -17,17 +17,19 @@ If not FileExist(PlinkPath)
 	ExitApp
 }
 
-sleep 1000
-Run "cmd  plink" COMPORT  , A_WorkingDir,"Hide", &PID
-;Run cmd.exe  A_WorkingDir PlinkPath  COMPORT ;,,, &PID ;,,"Max",&PID
-;WinWait "ahk_pid " ;PID 
+
+Run "cmd  plink" COMPORT  , A_WorkingDir,"max", &PID
 WinWait "ahk_pid " PID  ; Wartet, bis es erscheint.
 ControlSendText "plink" COMPORT "`n",,"cmd"
-;ControlSendText "plink" COMPORT  ; Sendet Tasten direkt an die Eingabeaufforderung.
-sleep 2001
-ControlSendText "Red" "`n",, "cmd"
-;ControlSendText "{Enter}",, "cmd"
-Sleep 300
+Sleep 3001
+Loop
+{
+	SetKeyDelay 30
+	ControlSendText "Red `n" ,, "cmd"
+	Sleep 5000
+	ControlSendText "Green `n",, "cmd"
+	Sleep 5000
+}
 try 
 	WinKill "cmd"
 Catch as e 

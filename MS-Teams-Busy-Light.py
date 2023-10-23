@@ -85,7 +85,7 @@ while 1:
          time.sleep(2)
       case "NewActivity":
          #msgbox(msg="NewActivity was read successfully",title="MS-Teams-Busy-Light Script")
-         ser.write(b'Red')
+         #ser.write(b'Red')
          time.sleep(2)
       case "ConnectionError":
          #msgbox(msg="ConnectionError was read successfully",title="MS-Teams-Busy-Light Script")

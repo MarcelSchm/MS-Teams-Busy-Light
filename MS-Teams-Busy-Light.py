@@ -51,8 +51,6 @@ while 1:
    match status:
       case "Available":
          #msgbox(msg="Available was read successfully",title="MS-Teams-Busy-Light Script")
-         msgbox(now_script)
-         msgbox(now_statuslog)
          ser.write(b'Green')
          time.sleep(2)
       case "Busy":
@@ -109,7 +107,7 @@ while 1:
          time.sleep(2)
       case "Outdated":
          #msgbox(msg="NoNetwork was read successfully",title="MS-Teams-Busy-Light Script")
-         ser.write(b'green')
+         ser.write(b'Green')
          time.sleep(2)
       case _:
          msgbox(msg="MS Teams Presence Status Script: The following Status is not yet known and needs to be added to the python Script: \n" + status,title="MS-Teams-Busy-Light Script")  

@@ -57,17 +57,23 @@ Idea on what/how to read from the log file I got from [this repository][2].
 Using the Log File, 
 this is the List of possible Teams Status that are available:
 
-| StatusName in Teams | StatusName in Log File  |  				Color 					|
-|:-------------------:|:-----------------------:|:-------------------------------------:|
-|    Available        |        Available        | 	:green_heart: green :green_heart: 	|
-|    Busy             |     Busy                | 	 :heart: red :heart:			    |
-|    In a meeting     | InAMeeting  			|	 :heart: red :heart:			    |
-|    In a call        |     OnThePhone          | 	 :heart: red :heart:			    |
-|    Do not disturb   | DoNotDisturb ,Presenting| 	 :heart: red :heart:			    |
-|    Be right back    |     BeRightBack         | :yellow_heart: yellow :yellow_heart:	|
-| 	 Away             |		Away				| :yellow_heart: yellow :yellow_heart:	|
-|	 Offline          |		Offline				| :yellow_heart: yellow :yellow_heart:	|
-| 		N/A			  | Unknown,NewActivity,ConnectionError,NoNetwork		| ?		 	|
+| StatusName in Teams | StatusName in Log File  |  				Color 					| Command String send to Arduino |
+|:-------------------:|:-----------------------:|:-------------------------------------:|:------------------------------:|
+|    Available        |        Available        | 	:green_heart: green :green_heart: 	|			green				 |
+|    Busy             |     Busy                | 	 :heart: red :heart:			    |			red				 	 |
+|    In a meeting     | InAMeeting  			|	 :heart: red :heart:			    |			red				 	 |
+|    In a call        |     OnThePhone          | 	 :heart: red :heart:			    |			red				 	 |
+|    Do not disturb   | DoNotDisturb ,Presenting| 	 :heart: red :heart:			    |			red				 	 |
+|    Be right back    |     BeRightBack         | :yellow_heart: yellow :yellow_heart:	|			yellow				 |
+| 	 Away             |		Away				| :yellow_heart: yellow :yellow_heart:	|			yellow				 |
+|	 Offline          |		Offline				| :yellow_heart: yellow :yellow_heart:	|			yellow				 |
+| 		N/A			  | NewActivity				| 						N/A	 			|								 |
+| 		N/A			  | Unknown,ConnectionError,NoNetwork| :heart: red :heart:		 	|			red				 	 |
+
+| Additional Status apart from Teams | 				Description 				  |  				Color 				  | Command String send to Arduino |
+|:----------------------------------:|:------------------------------------------:|:-------------------------------------:|:------------------------------:|
+|Established Connection				 | After successfully connecting to COM- Port | :white_heart:	white :white_heart:	  |				white			   |
+| Outdated 				| Status information in Log file is older than start of script| :green_heart: green :green_heart: |				green		       |	
 
 
 # Results and Assembly

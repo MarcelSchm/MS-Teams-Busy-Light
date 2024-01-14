@@ -10,7 +10,7 @@ def createVersionFile():
             output_file= "TeamsVersionFile.txt",
             version=versionNumber,
             company_name= "https://github.com/MarcelSchm",
-            file_description="Reads MS Teams Log File for Presence Status and sends cmds via COM Port to busy light.",
+            file_description="MS Teams Log File Presence Status",
             internal_name="MS-Teams-Busy-Light.exe",
             legal_copyright="Copyright © "  
                             + str(datetime.date.today().year) + ", "

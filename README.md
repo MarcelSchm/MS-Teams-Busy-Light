@@ -1,7 +1,22 @@
+- [MS Teams Busy Light](#ms-teams-busy-light)
+- [Hardware](#hardware)
+	- [Electronics](#electronics)
+- [Software](#software)
+	- [Installation as a User](#installation-as-a-user)
+	- [Installation as a developer](#installation-as-a-developer)
+		- [Installing Git](#installing-git)
+		- [Installing Visual Studio Code and Extensions](#installing-visual-studio-code-and-extensions)
+		- [Setup .venv in Visual Studio Code](#setup-venv-in-visual-studio-code)
+	- [How to get the presence status](#how-to-get-the-presence-status)
+		- [Teams Presence status](#teams-presence-status)
+- [Results and Assembly](#results-and-assembly)
+	- [Assembly](#assembly)
+	- [Results](#results)
+- [Reference / Link Collection](#reference--link-collection)
 # MS Teams Busy Light
 
-Repository for a DIY Busy light, that should represents the Teams presence status in small box, that will turn a plexiglass 
-with indirect LED light into a matching color.
+Repository for a DIY Busy light, that should represents the Teams presence status in a small box, that will turn a plexiglass 
+with indirect LED light into a matching presence color.
 
 
 # Hardware
@@ -24,18 +39,48 @@ Find the Wiring Diagram of the Neopixel RGB Strips and the Arduino below. They w
 
 # Software
 
-## Installation
+## Installation as a User
 
-First you need the software to run the Teams presence analyse script. For installing/updating, open a CMD and type:
+As a user you just need to download the latest version from [releases](https://github.com/MarcelSchm/MS-Teams-Busy-Light/releases) and run the .exe file. 
 
-	winget install -e --id AutoHotkey.AutoHotkey
+## Installation as a developer
+
+If you want to participate in this development, you can check out the current state of development by
+
+### Installing Git
+
+open CMD or powershell and type:
+
+	winget install -e --id Git.Git
+
+```
+git clone https://github.com/MarcelSchm/MS-Teams-Busy-Light.git <your-repopath>
+```
+
+### Installing Visual Studio Code and Extensions
 
 
-Now you need a serial tool, that is able to connect to the arduino and send the color change commands. For this, you need to have plink (a command-line interface to the PuTTY back ends). I put the latest 64-bit x86 version in the repo, but you can download it in case you need another one [from here][9].
+open CMD or powershell and type:
 
 
-Download the [Autohotkey Script](Read%20File.ahk) and run it.
+	winget install -e --id Microsoft.VisualStudioCode
 
+
+* Open Visual Studio Code.
+* Select _Extensions_ in the side menu icons.
+  * Search for _Python_ → Click Install.
+  * Search for _Pip Manager_ → Click Install.
+  * Search for _Markdown All in One_ → Click Install.
+* Click _File_ → _Open Workspace from File_.
+* Select _MS-Teams-Busy-Light.code-workspace_ from the repo path.
+* Hit <kbd>Enter</kbd>.
+
+
+### Setup .venv in Visual Studio Code
+
+* Click <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> and enter ``Create Environment``.
+* Select _Venv_ and hit <kbd>Enter</kbd>.
+* Select _requirements.txt_ install _Venv_ with the needed pip libraries.
 ## How to get the presence status
 
 There are different ways of fetching the presence status of teams. Microsoft provides the status of your account that 

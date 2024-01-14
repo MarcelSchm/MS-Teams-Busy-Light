@@ -17,3 +17,6 @@ build/MS-Teams-Busy-Light/localpycs/pyimod04_pywin32.pyc
 build/MS-Teams-Busy-Light/localpycs/struct.pyc
 __pycache__/datetime.cpython-312.pyc
 TeamsVersionFile.txt
+dist/LICENSE
+dist/MS-Teams-Busy-Light.exe
+dist/README.md

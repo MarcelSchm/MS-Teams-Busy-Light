@@ -52,6 +52,7 @@ def main():
    LogFilePath = path.expandvars(r'%APPDATA%\Microsoft\Teams\logs.txt') 
    # Define the regex pattern
    regexPatternStatus = "(?=StatusIndicatorStateService: Added )(?!.*StatusIndicatorStateService:Added )[^\\(]+"
+   regexPatternCalls = "DeviceCallControlManager Desktop: reportIncomingCall"
    status = 'initialize'
    now_script = datetime.now(timezone.utc) #timestamp from start to compare with last status in log file
 
@@ -70,71 +71,65 @@ def main():
                   else: 
                      status = "Outdated"
                   #msgbox(status) 
-                  break       
+                  break
+               if not None == regex.search(regexPatternCalls,l):
+                  now_statuslog = datetime.strptime("".join(l.split()[:6]), '%a%b%d%Y%H:%M:%SGMT%z') #Grab whole log string and extract timestamp
+                  if now_script < now_statuslog:
+                     status= "IncomingCall"
+                  else: 
+                     status = "Outdated"       
                   
       except FileNotFoundError:
          msgbox(msg="can't open file: \n" + LogFilePath + "\n No such file or directory",title="FileNotFoundError in MS-Teams-Busy-Light Script") 
 
       match status:
          case "Available":
-            #msgbox(msg="Available was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'Green')
             time.sleep(2)
          case "Busy":
-            #msgbox(msg="Busy was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'Red')
             time.sleep(2)
          case "InAMeeting":
-            #msgbox(msg="InAMeeting was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'Red')
             time.sleep(2)
          case "OnThePhone":
-            #msgbox(msg="OnThePhone was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'Red')
             time.sleep(2)
          case "DoNotDisturb":
-            #msgbox(msg="DoNotDisturb was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'Red')
             time.sleep(2)
          case "BeRightBack":
-            #msgbox(msg="BeRightBack was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'Yellow')
             time.sleep(2)
          case "Presenting":
-            #msgbox(msg="Presenting was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'Red')
             time.sleep(2)
          case "Away":
-            #msgbox(msg="Away was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'Yellow')
             time.sleep(2)
          case "Offline":
-            #msgbox(msg="Offline was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'Yellow')
             time.sleep(2)
          case "Unknown":
-            #msgbox(msg="Unknown was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'Red')
             time.sleep(2)
          case "NewActivity":
-            #msgbox(msg="NewActivity was read successfully",title="MS-Teams-Busy-Light Script")
             #ser.write(b'Red')
             time.sleep(2)
          case "ConnectionError":
-            #msgbox(msg="ConnectionError was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'Red')
             time.sleep(2)
          case "NoNetwork":
-            #msgbox(msg="NoNetwork was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'Red')
             time.sleep(2)
          case "Initialize":
-            #msgbox(msg="NoNetwork was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'White')
             time.sleep(2)
          case "Outdated":
-            #msgbox(msg="NoNetwork was read successfully",title="MS-Teams-Busy-Light Script")
             ser.write(b'Green')
+            time.sleep(2)
+         case "IncomingCall":
+            ser.write(b'BlinkRed')
             time.sleep(2)
          case _:
             msgbox(msg="MS Teams Presence Status Script: The following Status is not yet known and needs to be added to the python Script: \n" + status,title="MS-Teams-Busy-Light Script")  

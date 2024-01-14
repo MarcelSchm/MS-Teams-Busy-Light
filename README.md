@@ -105,26 +105,30 @@ The location of this file:
 Idea on what/how to read from the log file I got from [this repository][2].
 	
 ### Teams Presence status
-Using the Log File, 
-this is the List of possible Teams Status that are available:
+The Log File contains several information. 
+Changes in Teams Presence status can be obtained from messages containing ```StatusIndicatorStateService: Added```, message containing information for Calls contain ```DeviceCallControlManager Desktop:```.
+This is the List of possible Teams Status that are available:
+(Main )
 
 | StatusName in Teams | StatusName in Log File  |  				Color 					| Command String send to Arduino |
 |:-------------------:|:-----------------------:|:-------------------------------------:|:------------------------------:|
-|    Available        |        Available        | 	:green_heart: green :green_heart: 	|			green				 |
-|    Busy             |     Busy                | 	 :heart: red :heart:			    |			red				 	 |
-|    In a meeting     | InAMeeting  			|	 :heart: red :heart:			    |			red				 	 |
-|    In a call        |     OnThePhone          | 	 :heart: red :heart:			    |			red				 	 |
-|    Do not disturb   | DoNotDisturb ,Presenting| 	 :heart: red :heart:			    |			red				 	 |
-|    Be right back    |     BeRightBack         | :yellow_heart: yellow :yellow_heart:	|			yellow				 |
-| 	 Away             |		Away				| :yellow_heart: yellow :yellow_heart:	|			yellow				 |
-|	 Offline          |		Offline				| :yellow_heart: yellow :yellow_heart:	|			yellow				 |
+|    Available        |        Available        | 	:green_heart: green :green_heart: 	|			Green				 |
+|    Busy             |     Busy                | 	 :heart: red :heart:			    |			Red				 	 |
+|    In a meeting     | InAMeeting  			|	 :heart: red :heart:			    |			Red				 	 |
+|    In a call        |     OnThePhone          | 	 :heart: red :heart:			    |			Red				 	 |
+|    Do not disturb   | DoNotDisturb ,Presenting| 	 :heart: red :heart:			    |			Red				 	 |
+|    Be right back    |     BeRightBack         | :yellow_heart: yellow :yellow_heart:	|			Yellow				 |
+| 	 Away             |		Away				| :yellow_heart: yellow :yellow_heart:	|			Yellow				 |
+|	 Offline          |		Offline				| :yellow_heart: yellow :yellow_heart:	|			Yellow				 |
 | 		N/A			  | NewActivity				| 						N/A	 			|								 |
-| 		N/A			  | Unknown,ConnectionError,NoNetwork| :heart: red :heart:		 	|			red				 	 |
+| 		N/A			  | Unknown,ConnectionError,NoNetwork| :heart: red :heart:		 	|			Red				 	 |
+| 	'Calling' Window  | reportIncomingCall 		| :heart: red :heart:		 			|			BlinkRed				 	 |
+
 
 | Additional Status apart from Teams | 				Description 				  |  				Color 				  | Command String send to Arduino |
 |:----------------------------------:|:------------------------------------------:|:-------------------------------------:|:------------------------------:|
-|Established Connection				 | After successfully connecting to COM- Port | :white_heart: white :white_heart:	  |				white			   |
-| Outdated 				| Status information in Log file is older than start of script| :green_heart: green :green_heart: |				green		       |	
+|Established Connection				 | After successfully connecting to COM- Port | :white_heart: white :white_heart:	  |				White			   |
+| Outdated 				| Status information in Log file is older than start of script| :green_heart: green :green_heart: |				Green		       |	
 
 
 # Results and Assembly

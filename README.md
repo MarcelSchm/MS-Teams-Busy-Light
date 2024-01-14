@@ -7,6 +7,7 @@
 		- [Installing Git](#installing-git)
 		- [Installing Visual Studio Code and Extensions](#installing-visual-studio-code-and-extensions)
 		- [Setup .venv in Visual Studio Code](#setup-venv-in-visual-studio-code)
+		- [Create new .exe](#create-new-exe)
 	- [How to get the presence status](#how-to-get-the-presence-status)
 		- [Teams Presence status](#teams-presence-status)
 - [Results and Assembly](#results-and-assembly)
@@ -81,6 +82,11 @@ open CMD or powershell and type:
 * Click <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> and enter ``Create Environment``.
 * Select _Venv_ and hit <kbd>Enter</kbd>.
 * Select _requirements.txt_ install _Venv_ with the needed pip libraries.
+
+### Create new .exe
+
+Just execute the the [Powershell Script](createNewTeamsBusyLightExe.ps1) in a powershell admin shell. 
+
 ## How to get the presence status
 
 There are different ways of fetching the presence status of teams. Microsoft provides the status of your account that 

@@ -1,6 +1,6 @@
 import pyinstaller_versionfile, datetime, os, sys
 #from src.utils import VERSION_CONFIG_FILE, ConfigurationVersionFileSections, ConfigurationVersionFileVersionOptions, ConfigurationVersionFileDataOptions, ConfigurationVersionFileOutputOptions
-versionNumber = "0.1.1.0" # Version scheme: major.minor.patch
+versionNumber = "1.1.0" # Version scheme: major.minor.patch
 
 
 def createVersionFile():
@@ -10,7 +10,7 @@ def createVersionFile():
             output_file= "TeamsVersionFile.txt",
             version=versionNumber,
             company_name= "https://github.com/MarcelSchm",
-            file_description="Software for A DIY Busy light, that should represent the Teams presence status in a small wooden box, that will turn a plexiglass with indirect LED light into a matching color",
+            file_description="Reads MS Teams Log File for Presence Status and sends cmds via COM Port to busy light.",
             internal_name="MS-Teams-Busy-Light.exe",
             legal_copyright="Copyright © "  
                             + str(datetime.date.today().year) + ", "

@@ -9,6 +9,30 @@ $versionFile = "./TeamsVersionFile.txt"
 
 $necessaryFiles =  ".\README.md", ".\LICENSE"
 
+function New-StaticZipFile
+{
+  Write-Host 'Creating new .zip file'
+
+  $Files = New-Object -TypeName 'System.Collections.ArrayList'
+  $buildPath = Join-Path (Get-Location) "\dist"
+  $buildPath = $buildPath -replace "`"", "'"
+  $FolderItems= Get-ChildItem $buildPath -name
+  $Files.Add($buildPath + '\' + $FolderItems[0])
+  $Files.Add($buildPath + '\' + $FolderItems[1])
+  $Files.Add($buildPath + '\' + $FolderItems[2])
+
+  If (Test-Path -Path ($buildPath  + '\MS-Teams-Busy-Light.zip') -PathType Leaf)
+  {
+    Write-Host 'Deleting existing MS-Teams-Busy-Light.zip file'
+    Remove-Item -Path ($buildPath  + '\MS-Teams-Busy-Light.zip')
+  }
+
+  Compress-Archive -Path $Files -DestinationPath ($buildPath  + '\MS-Teams-Busy-Light.zip')
+
+  Write-Host 'Finished creating new MS-Teams-Busy-Light.zip file'
+}
+
+
 Write-Output "-- Starting to create MS Teams Busy Light executable --`n`n"
 Write-Output "-- Removing old dist folder --`n`n"
 Remove-Item $outputFolder -Recurse -Force -Confirm:$false
@@ -34,13 +58,16 @@ Write-Output "`n`n-- Creating Version File --`n`n"
 python $CreateVersionfile
 Write-Output "`n`n-- Starting PyInstaller --`n`n"
 #trying to start pyinstaller with -windowed option results in windows antivirus error messages. therefore the folder you want to build the exe in will be setup as an exception
-$temp = Join-Path (Get-Location) "\dist"
-$temp = $temp -replace "`"", "'"
-Add-MpPreference -ExclusionPath $temp
+$buildPath = Join-Path (Get-Location) "\dist"
+$buildPath = $buildPath -replace "`"", "'"
+Add-MpPreference -ExclusionPath $buildPath
 Start-Process -FilePath $pyInstallerPath -NoNewWindow -Wait -ArgumentList "$TeamsPy --onefile --icon=$iconFile --version-file=$versionFile --distpath $outputFolder --clean --windowed"
-Remove-MpPreference -ExclusionPath $temp
+Remove-MpPreference -ExclusionPath $buildPath
 Write-Output "`n`n-- Copying necessary files for execution --`n`n"
 foreach ($file in $necessaryFiles)
 {
     Copy-Item $file -Destination $outputFolder -Force
 }
+New-StaticZipFile
+
+

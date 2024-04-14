@@ -9,6 +9,8 @@
 		- [Setup .venv in Visual Studio Code](#setup-venv-in-visual-studio-code)
 		- [Create new .exe](#create-new-exe)
 	- [How to get the presence status](#how-to-get-the-presence-status)
+		- [MS Teams OLD](#ms-teams-old)
+		- [MS Teams NEW](#ms-teams-new)
 		- [Teams Presence status](#teams-presence-status)
 - [Results and Assembly](#results-and-assembly)
 	- [Assembly](#assembly)
@@ -98,11 +100,23 @@ I needed to find a workaround. If you might want to check it on your own hou can
 [how to get presence using Graph API][6].
 One of them is the monitor the MS Teams log file on the local Harddrive.
 
+> [!NOTE]
+> This solution below only works for the OLD version of Microsoft Teams. The new version is on a different location, with some differences and limitations. Therefore, there will be an updated `MS-Teams-Settings.config` config setting file, that can be used to confige which version you want to use. 
+
+
+### MS Teams OLD
 The location of this file: 
 
 	C:\Users\%userprofile%\AppData\Roaming\Microsoft\Teams\logs.txt
 	
 Idea on what/how to read from the log file I got from [this repository][2].
+
+### MS Teams NEW
+The location of this file: 
+
+	C:\Users\%localappdata%\Packages\MSTeams_8wekyb3d8bbwe\LocalCache\Microsoft\MSTeams\Logs
+
+
 	
 ### Teams Presence status
 The Log File contains several information. 

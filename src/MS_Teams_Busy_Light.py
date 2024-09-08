@@ -463,7 +463,7 @@ if __name__ == "__main__":
     timestamp = datetime.now()
     settings = load_settings("MS_Teams_Settings.ini")
     configure_logging(settings) # activates debug logs according to .ini file
-    if not settings["debug"]["enabled"]:
+    if not settings["debug"]["enabled"].lower() in ['true', 'yes', 'y']:
         read_com_ports()
         write_initial_COM_Port()
     else:
@@ -474,7 +474,7 @@ if __name__ == "__main__":
         if newLog:
             status = search_availability_in_log(path,settings["SearchString"])
         #status = startup_log_read(settings)
-        if not settings["debug"]["enabled"]:
+        if not settings["debug"]["enabled"].lower() in ['true', 'yes', 'y']:
             write_status_to_busy_light(status)
         else:
             logging.info("Bypassing write_status_to_busy_light due to debug mode.")

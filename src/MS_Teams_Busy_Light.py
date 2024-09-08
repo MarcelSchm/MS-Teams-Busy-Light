@@ -461,7 +461,7 @@ def search_availability_in_log(log_file_path, availability_string):
 
 if __name__ == "__main__":
     timestamp = datetime.now()
-    settings = load_settings("src/MS-Teams-Settings.ini")
+    settings = load_settings("MS_Teams_Settings.ini")
     configure_logging(settings) # activates debug logs according to .ini file
     if not settings["debug"]["enabled"]:
         read_com_ports()

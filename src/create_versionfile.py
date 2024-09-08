@@ -1,6 +1,6 @@
 import pyinstaller_versionfile, datetime, os, sys
 #from src.utils import VERSION_CONFIG_FILE, ConfigurationVersionFileSections, ConfigurationVersionFileVersionOptions, ConfigurationVersionFileDataOptions, ConfigurationVersionFileOutputOptions
-versionNumber = "1.1.0" # Version scheme: major.minor.patch
+versionNumber = "1.3.0" # Version scheme: major.minor.patch
 
 
 def createVersionFile():

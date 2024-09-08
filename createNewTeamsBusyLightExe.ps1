@@ -1,13 +1,13 @@
 $outputFolder =  ".\dist"
 $pyInstallerPath = ".\.venv\Scripts\pyinstaller.exe"
 $pyActivateVenv = "/.venv/Scripts/Activate.ps1"
-$TeamsPy = ".\src\MS-Teams-Busy-Light.py"
+$TeamsPy = ".\src\MS_Teams_Busy_Light.py"
 $CreateVersionfile = ".\src\create_versionfile.py"
 $pipRequirements = ".\requirements.txt"
 $iconFile = "./images/traffic_light.ico"
 $versionFile = "./TeamsVersionFile.txt"
 
-$necessaryFiles =  ".\README.md", ".\LICENSE"
+$necessaryFiles =  ".\README.md", ".\LICENSE", "./MS_Teams_Settings.ini"
 
 function New-StaticZipFile
 {
@@ -21,15 +21,15 @@ function New-StaticZipFile
   $Files.Add($buildPath + '\' + $FolderItems[1])
   $Files.Add($buildPath + '\' + $FolderItems[2])
 
-  If (Test-Path -Path ($buildPath  + '\MS-Teams-Busy-Light.zip') -PathType Leaf)
+  If (Test-Path -Path ($buildPath  + '\MS_Teams_Busy_Light.zip') -PathType Leaf)
   {
-    Write-Host 'Deleting existing MS-Teams-Busy-Light.zip file'
-    Remove-Item -Path ($buildPath  + '\MS-Teams-Busy-Light.zip')
+    Write-Host 'Deleting existing MS_Teams_Busy_Light.zip file'
+    Remove-Item -Path ($buildPath  + '\MS_Teams_Busy_Light.zip')
   }
 
-  Compress-Archive -Path $Files -DestinationPath ($buildPath  + '\MS-Teams-Busy-Light.zip')
+  Compress-Archive -Path $Files -DestinationPath ($buildPath  + '\MS_Teams_Busy_Light.zip')
 
-  Write-Host 'Finished creating new MS-Teams-Busy-Light.zip file'
+  Write-Host 'Finished creating new MS_Teams_Busy_Light.zip file'
 }
 
 

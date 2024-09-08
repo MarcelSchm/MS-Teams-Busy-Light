@@ -18,3 +18,4 @@ build/MS-Teams-Busy-Light/localpycs/struct.pyc
 __pycache__/datetime.cpython-312.pyc
 TeamsVersionFile.txt
 dist/
+logs/

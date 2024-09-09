@@ -61,7 +61,7 @@ def configure_logging(config_settings):
     """
     try:
         debug_settings = config_settings.get("debug", {})
-        if debug_settings.get("enabled", "yes").lower() in ["yes", "true", "y", "debug", "info", "warning", "error", "critical"]:
+        if debug_settings.get("logginglevel").lower() in ["yes", "true", "y", "debug", "info", "warning", "error", "critical"]:
             log_file_path = debug_settings.get("log_file_path", "debug.log")
             max_size_mb = int(debug_settings.get("max_size_mb", 5))
             backup_count = int(debug_settings.get("backup_count", 3))

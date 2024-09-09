@@ -4,15 +4,14 @@ import sys
 import time
 import os
 import re
-from datetime import datetime, timezone
+from datetime import datetime
 import configparser
 import logging
+from logging.handlers import TimedRotatingFileHandler
 import serial
 import serial.tools.list_ports
-import regex
 from file_read_backwards import FileReadBackwards
 from easygui import msgbox, choicebox
-from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 
 
 # Global variables to store the last known status of the user, as well as some serial data stuff
@@ -53,7 +52,7 @@ def load_settings(config_file):
         logging.error(f"Unexpected error: {e}")
     return None
 
-def configure_logging(settings):
+def configure_logging(config_settings):
     """
     Configures the logging system based on settings from the configuration file.
 
@@ -61,8 +60,8 @@ def configure_logging(settings):
         settings (dict): A dictionary of configuration settings.
     """
     try:
-        debug_settings = settings.get("debug", {})
-        if debug_settings.get("enabled", "yes").lower() == "yes":
+        debug_settings = config_settings.get("debug", {})
+        if debug_settings.get("enabled", "yes").lower() in ["yes", "true", "y", "debug", "info", "warning", "error", "critical"]:
             log_file_path = debug_settings.get("log_file_path", "debug.log")
             max_size_mb = int(debug_settings.get("max_size_mb", 5))
             backup_count = int(debug_settings.get("backup_count", 3))
@@ -74,17 +73,17 @@ def configure_logging(settings):
                 os.makedirs(log_folder)
 
             logging.basicConfig(
-                level=logging.DEBUG,
+                level=logging.INFO,
                 format="%(asctime)s - %(levelname)s - %(message)s",
                 datefmt="%Y-%m-%d %H:%M:%S",
             )
-            handler = RotatingFileHandler(
-                log_file_path, maxBytes=max_size_mb * 1024 * 1024, backupCount=backup_count
+            handler = TimedRotatingFileHandler(
+                log_file_path, when="h", interval=rotate_interval_hours, backupCount=backup_count
             )
             logging.getLogger("").addHandler(handler)
         else:
             logging.disable(logging.CRITICAL)
-    except Exception as e:
+    except (OSError, ValueError) as e:
         logging.error("Failed to configure logging: %s", e)
 
 
@@ -308,52 +307,52 @@ def write_status_to_busy_light(status):
     # Implementation of writing status to busy light
     logging.info("Writing status %s to busy light...",status)
     match status:
-        case "Available":
+        case "available":
             ser.write(b"Green")
             time.sleep(2)
-        case "Busy":
+        case "busy":
             ser.write(b"Red")
             time.sleep(2)
-        case "InAMeeting":
+        case "inameeting":
             ser.write(b"Red")
             time.sleep(2)
-        case "OnThePhone":
+        case "onthephone":
             ser.write(b"Red")
             time.sleep(2)
-        case "DoNotDisturb":
+        case "donotdisturb":
             ser.write(b"Red")
             time.sleep(2)
-        case "BeRightBack":
+        case "berightback":
             ser.write(b"Yellow")
             time.sleep(2)
-        case "Presenting":
+        case "presenting":
             ser.write(b"Red")
             time.sleep(2)
-        case "Away":
+        case "away":
             ser.write(b"Yellow")
             time.sleep(2)
-        case "Offline":
+        case "offline":
             ser.write(b"Yellow")
             time.sleep(2)
-        case "Unknown":
+        case "unknown":
             ser.write(b"Red")
             time.sleep(2)
-        case "NewActivity":
+        case "newactivity":
             # ser.write(b'Red')
             time.sleep(2)
-        case "ConnectionError":
+        case "connectionerror":
             ser.write(b"Red")
             time.sleep(2)
-        case "NoNetwork":
+        case "nonetwork":
             ser.write(b"Red")
             time.sleep(2)
-        case "Initialize":
+        case "initialize":
             ser.write(b"White")
             time.sleep(2)
-        case "Outdated":
+        case "outdated":
             ser.write(b"Green")
             time.sleep(2)
-        case "IncomingCall":
+        case "incomingcall":
             ser.write(b"BlinkRed")
             time.sleep(2)
         case _:
@@ -427,13 +426,14 @@ def check_new_or_modified_log(settings, last_checked_time):
     logging.info("check_new_or_modified_log - No new file or modification to it, since last check.")
     return False, latest_file_path,latest_file_mtime
 
-def search_availability_in_log(log_file_path, availability_string):
+def search_availability_in_log(log_file_path, availability_string, status_states):
     """
     Search for the last occurrence of the "availability" string in the log file given as argument and return the value of the last occurence.
 
     Args:
         log_file_path (str): Path to the log file.
         availability_string (str): The string to search for in the log file.
+        status_states (str): The list of possible status states.
 
     Returns:
         str: The value of the last occurrence of the availability string.
@@ -445,16 +445,16 @@ def search_availability_in_log(log_file_path, availability_string):
     search_string = f"{availability_string}:"
 
     with FileReadBackwards(log_file_path, encoding="utf-8") as frb:
-                for line in frb:
-                    if search_string in line:
-                        # Extract the value after the availability string
-                        # examplestring from log:
-                        # 2024-09-07T21:18:25.244338+02:00 0x00003de8 <INFO> native_modules::UserDataCrossCloudModule: BroadcastGlobalState: New Global State Event: UserDataGlobalState total number of users: 1 { user id :31e6a1801808ed67, availability: PresenceUnknown, unread notification count: 0 }
-                        last_value = line.split(search_string)[-1].strip().split(',',1)[0].lower()
-                        logging.info("Logfile: %s. Following Status found: %s",log_file_path,last_value)
-                        if last_value not in settings["StatusStates"]:
-                            logging.error("search_availability_in_log -  Status %s read in log is not yet part of settings.ini",last_value)
-                        break
+        for line in frb:        
+            if search_string in line:
+                # Extract the value after the availability string
+                # examplestring from log:
+                # 2024-09-07T21:18:25.244338+02:00 0x00003de8 <INFO> native_modules::UserDataCrossCloudModule: BroadcastGlobalState: New Global State Event: UserDataGlobalState total number of users: 1 { user id :31e6a1801808ed67, availability: PresenceUnknown, unread notification count: 0 }
+                last_value = line.split(search_string)[-1].strip().split(',',1)[0].lower()
+                logging.info("Logfile: %s. Following Status found: %s",log_file_path,last_value)
+                if last_value not in status_states:
+                    logging.error("search_availability_in_log -  Status %s read in log is not yet part of settings.ini",last_value)
+                break
     if last_value is None:
         logging.error("search_availability_in_log - No occurrence of %s found in file %s",search_string,log_file_path)
     return last_value
@@ -472,9 +472,9 @@ if __name__ == "__main__":
         newLog,path,latest_file_mtime = check_new_or_modified_log(settings,timestamp)
         timestamp = latest_file_mtime
         if newLog:
-            status = search_availability_in_log(path,settings["SearchString"])
+            status = search_availability_in_log(path,settings["SearchString"],settings["StatusStates"])
         #status = startup_log_read(settings)
         if not settings["debug"]["enabled"].lower() in ['true', 'yes', 'y']:
-            write_status_to_busy_light(status)
+            write_status_to_busy_light(status.lower())
         else:
             logging.info("Bypassing write_status_to_busy_light due to debug mode.")

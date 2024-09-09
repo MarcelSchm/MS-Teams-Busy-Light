@@ -7,7 +7,7 @@ import re
 from datetime import datetime
 import configparser
 import logging
-from logging.handlers import TimedRotatingFileHandler, RotatingFileHandler
+from logging.handlers import RotatingFileHandler
 import serial
 import serial.tools.list_ports
 from file_read_backwards import FileReadBackwards
@@ -63,22 +63,17 @@ def configure_logging(config_settings):
         debug_settings = config_settings.get("debug", {})
         log_level = debug_settings.get("logginglevel").upper()
         if log_level in ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]:
-            log_file_path = debug_settings.get("log_file_path", "debug.log")
-            max_size_mb = int(debug_settings.get("max_size_mb", 5))
-            backup_count = int(debug_settings.get("backup_count", 3))
-            rotate_interval_hours = int(debug_settings.get("rotate_interval_hours", 24))
+            log_file_path = debug_settings.get("log_file_path")
+            max_size_mb = int(debug_settings.get("max_size_mb"))
+            backup_count = int(debug_settings.get("backup_count"))
 
             # Ensure the log folder exists
             log_folder = os.path.dirname(log_file_path)
-            if log_folder and not os.path.exists(log_folder):
+            if not os.path.exists(log_folder):
                 os.makedirs(log_folder)
 
-            logging.basicConfig(
-                level=getattr(logging, log_level),
-                format="%(asctime)s - %(levelname)s - %(message)s",
-                datefmt="%Y-%m-%d %H:%M:%S",
-            )
 
+            logging.getLogger('').setLevel(log_level)
             # Use RotatingFileHandler for size-based rotation
             size_handler = RotatingFileHandler(
                 log_file_path, maxBytes=max_size_mb * 1024 * 1024, backupCount=backup_count
@@ -86,16 +81,7 @@ def configure_logging(config_settings):
             size_handler.setFormatter(logging.Formatter(
                 "%(asctime)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
             ))
-            logging.getLogger("").addHandler(size_handler)
-
-            # Use TimedRotatingFileHandler for time-based rotation
-            time_handler = TimedRotatingFileHandler(
-                log_file_path, when="h", interval=rotate_interval_hours, backupCount=backup_count
-            )
-            time_handler.setFormatter(logging.Formatter(
-                "%(asctime)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
-            ))
-            logging.getLogger("").addHandler(time_handler)
+            logging.getLogger('').addHandler(size_handler)
         else:
             logging.disable(logging.CRITICAL)
     except (OSError, ValueError) as e:

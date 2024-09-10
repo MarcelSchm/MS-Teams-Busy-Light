@@ -467,6 +467,7 @@ if __name__ == "__main__":
     if not settings["debug"]["enabled"].lower() in ['true', 'yes', 'y']:
         read_com_ports()
         write_initial_COM_Port()
+        status = "initialize"
     else:
         logging.info("Bypassing Setup of read_com_ports and write_initial_COM_Port() due to debug mode.")
     while True:

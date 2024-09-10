@@ -1,22 +1,29 @@
-import pyinstaller_versionfile, datetime, os, sys
-#from src.utils import VERSION_CONFIG_FILE, ConfigurationVersionFileSections, ConfigurationVersionFileVersionOptions, ConfigurationVersionFileDataOptions, ConfigurationVersionFileOutputOptions
+import pyinstaller_versionfile
+import datetime
+import os
+import sys
+import configparser
+
+
 versionNumber = "1.3.0" # Version scheme: major.minor.patch
 
 
 def createVersionFile():
     try: 
-        
+        versionConfig = configparser.ConfigParser()
+        versionConfig.read(os.path.dirname(__file__) + os.path.sep + ".." + os.path.sep + "version.conf")
+
         pyinstaller_versionfile.create_versionfile(
-            output_file= "TeamsVersionFile.txt",
-            version=versionNumber,
-            company_name= "https://github.com/MarcelSchm",
-            file_description="MS Teams Log File Presence Status",
-            internal_name="MS-Teams-Busy-Light.exe",
+            output_file= versionConfig["Output"]["VersionFile"],
+            version=versionConfig["Version"]["Number"],
+            company_name= versionConfig["Data"]["CompanyName"],
+            file_description=versionConfig["Data"]["Description"],
+            internal_name=versionConfig["Data"]["InternalName"],
             legal_copyright="Copyright © "  
                             + str(datetime.date.today().year) + ", "
                             + "gpl-3.0",
-            original_filename="MS-Teams-Busy-Light.exe",
-            product_name="MS Teams Presence Status Busy Light"
+            original_filename=versionConfig["Data"]["OriginalFilename"],
+            product_name=versionConfig["Data"]["ProductName"]
         )
     except Exception as e:
         print("An exception happend: " + str(e))

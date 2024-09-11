@@ -26,7 +26,7 @@ jobs:
       - name: Build project
         run: |
           # Run your build script here
-          python .\src\create_versionfile.py
+          python src/create_versionfile.py
 
       - name: Create GitHub Release
         id: create_release

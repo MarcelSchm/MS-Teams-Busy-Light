@@ -29,6 +29,10 @@ jobs:
           # Run your build script here
           python create_versionfile.py
 
+      - name: Run PowerShell script
+        run: |
+          pwsh ./createNewTeamsBusyLightExe.ps1
+
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
@@ -49,6 +53,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/MS_Teams_Busy_Light.zip
+          asset_path: ./dist/MS_Teams_Busy_Light.zip
           asset_name: MS_Teams_Busy_Light.zip
           asset_content_type: application/zip

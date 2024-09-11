@@ -4,7 +4,7 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 ## [v_1.3.0.2] - 2024-09-11
 
-[52c74a6](52c74a6cb23aed2d4657dc31ba543eec19fe3120)...[9130f7f](9130f7fe58311ed440d7f7a23ce7d533f7f0deab)
+[52c74a6](52c74a6cb23aed2d4657dc31ba543eec19fe3120)...[edcbd9f](edcbd9fe8e9e8a5824528c9962b7de4e7765d343)
 
 ### <!-- 1 -->🐛 Bug Fixes
 
@@ -20,6 +20,8 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 - Added changelog File with auto generated content of commit messages of latest tag. ([55df92d](55df92d480872c70a9b1197e10c563fab30fc292))
 
+- Added changelog File with auto generated content of commit messages of latest tag. ([20172e2](20172e248658464506f46a90a4c0ef6f18522bae))
+
 
 ### <!-- 8 -->⚙️ Miscellaneous Tasks
 
@@ -30,6 +32,13 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 - Update version number to 1.3.0.2 for first automate release workflow check and loggging info updates. ([1b8afd2](1b8afd214ffcb133cf1af3184294fecaeb86dbb6))
 
 -  ci:adjusted release.yml for github action workflow for latest error messages ([c5cbda0](c5cbda0c13a711556daee4549c608f1e7b0d39fe))
+
+-  ci:adjusted release.yml for github action workflow for latest error messages ([ef04e89](ef04e898e88f7b40b698ffbb755394dfb629e73d))
+
+-  ci:adjusted correct path ([23e2108](23e2108730c3df696e7f287e130852d6526f170f))
+
+-  ci:adjusted release.yml for github action workflow for latest error messages
+ ([edcbd9f](edcbd9fe8e9e8a5824528c9962b7de4e7765d343))
 
 
 ## [v_1.3.0.1] - 2024-09-10

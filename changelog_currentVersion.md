@@ -4,7 +4,7 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 ## [v_1.3.0.2] - 2024-09-11
 
-[52c74a6](52c74a6cb23aed2d4657dc31ba543eec19fe3120)...[edcbd9f](edcbd9fe8e9e8a5824528c9962b7de4e7765d343)
+[52c74a6](52c74a6cb23aed2d4657dc31ba543eec19fe3120)...[34da2db](34da2dbffd47b8ac535a44a6344546df955cb9c7)
 
 ### <!-- 1 -->🐛 Bug Fixes
 
@@ -21,6 +21,8 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 - Added changelog File with auto generated content of commit messages of latest tag. ([55df92d](55df92d480872c70a9b1197e10c563fab30fc292))
 
 - Added changelog File with auto generated content of commit messages of latest tag. ([20172e2](20172e248658464506f46a90a4c0ef6f18522bae))
+
+- Added changelog File with auto generated content of commit messages of latest tag. ([61baa4b](61baa4b955ff8c997cd412f72dc0e912c6d3a884))
 
 
 ### <!-- 8 -->⚙️ Miscellaneous Tasks
@@ -39,6 +41,10 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 -  ci:adjusted release.yml for github action workflow for latest error messages
  ([edcbd9f](edcbd9fe8e9e8a5824528c9962b7de4e7765d343))
+
+- Add PowerShell script to create new Teams Busy Light executable ([9474178](94741788fbd1b065c6eef0918bad49c16438c36f))
+
+- Add PowerShell script to create new Teams Busy Light executable and read changelog ([34da2db](34da2dbffd47b8ac535a44a6344546df955cb9c7))
 
 
 <!-- generated automatically by git-cliff  -->

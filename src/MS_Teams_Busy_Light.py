@@ -306,7 +306,7 @@ def write_status_to_busy_light(status):
 
     """
     # Implementation of writing status to busy light
-    logging.info("Writing status %s to busy light...",status)
+    logging.info("write_status_to_busy_light - Writing status %s to busy light...",status)
     match status:
         case "available":
             ser.write(b"Green")
@@ -445,20 +445,24 @@ def search_availability_in_log(log_file_path, availability_string, status_states
     last_value = None
     search_string = f"{availability_string}:"
 
+    # Regular expression to match the word after "availability:"
+    pattern = re.compile(rf"{re.escape(search_string)}\s*([A-Za-z]+)")
+
     with FileReadBackwards(log_file_path, encoding="utf-8") as frb:
-        for line in frb:        
-            if search_string in line:
+        for line in frb:    
+            match = pattern.search(line)
+            if match:
+                last_value = match.group(1)    
                 # Extract the value after the availability string
                 # examplestring from log:
                 # 2024-09-07T21:18:25.244338+02:00 0x00003de8 <INFO> native_modules::UserDataCrossCloudModule: BroadcastGlobalState: New Global State Event: UserDataGlobalState total number of users: 1 { user id :31e6a1801808ed67, availability: PresenceUnknown, unread notification count: 0 }
-                last_value = line.split(search_string)[-1].strip().split(',',1)[0].lower()
                 logging.info("Logfile: %s. Following Status found: %s",log_file_path,last_value)
                 if last_value not in status_states:
                     logging.error("search_availability_in_log -  Status %s read in log is not yet part of settings.ini",last_value)
                 break
     if last_value is None:
         logging.error("search_availability_in_log - No occurrence of %s found in file %s",search_string,log_file_path)
-    return last_value
+    return last_value.lower()
 
 if __name__ == "__main__":
     timestamp = datetime.now()
@@ -469,14 +473,14 @@ if __name__ == "__main__":
         write_initial_COM_Port()
         status = "initialize"
     else:
-        logging.info("Bypassing Setup of read_com_ports and write_initial_COM_Port() due to debug mode.")
+        logging.info("Main initialize - Bypassing Setup of read_com_ports and write_initial_COM_Port() due to debug mode.")
     while True:
         newLog,path,latest_file_mtime = check_new_or_modified_log(settings,timestamp)
         timestamp = latest_file_mtime
         if newLog:
             status = search_availability_in_log(path,settings["SearchString"],settings["StatusStates"])
-        #status = startup_log_read(settings)
+            logging.info("Main loop - Status Value set to: %s",status)
         if not settings["debug"]["enabled"].lower() in ['true', 'yes', 'y']:
-            write_status_to_busy_light(status.lower())
+            write_status_to_busy_light(status)
         else:
-            logging.info("Bypassing write_status_to_busy_light due to debug mode.")
+            logging.info("While True loop - Bypassing write_status_to_busy_light due to debug mode.")

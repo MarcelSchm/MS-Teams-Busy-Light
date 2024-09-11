@@ -24,9 +24,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Build project
+        working-directory: ./src
         run: |
           # Run your build script here
-          python src/create_versionfile.py
+          python create_versionfile.py
 
       - name: Create GitHub Release
         id: create_release

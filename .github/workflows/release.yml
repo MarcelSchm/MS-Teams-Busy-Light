@@ -33,6 +33,12 @@ jobs:
         run: |
           pwsh ./createNewTeamsBusyLightExe.ps1
 
+      - name: Read changelog
+        id: read_changelog
+        run: |
+          cat changelog_currentVersion.md
+        continue-on-error: false
+
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
@@ -41,10 +47,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body: |
-            ## Changelog
-            $(cat changelog_currentVersion.md)
-          draft: false
+          body: ${{ steps.read_changelog.outputs.stdout }}
           prerelease: false
 
       - name: Upload Release Assets

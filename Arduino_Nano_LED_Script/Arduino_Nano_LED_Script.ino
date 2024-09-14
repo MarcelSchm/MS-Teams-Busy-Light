@@ -102,6 +102,7 @@ void setup()
   // pixels.clear();  // Set all pixel colors to 'off'
   SetAllPixelToColor(255, 255, 255);
   pixels.show(); // Send the updated pixel colors to the hardware.
+  DEBUG_INFORMATION_SERIAL.println(" Version: 1.3.0.3  - Setup done, Arduino initialized. Waiting for Serial input......");
 }
 
 void loop()
@@ -218,11 +219,11 @@ void blink(int R, int G, int B)
   uint32_t test = pixels.getPixelColor(1);
   DEBUG_INFORMATION_SERIAL.println("void blink() start");
   DEBUG_INFORMATION_SERIAL.println("RGB Values of first strip");
-  DEBUG_INFORMATION_SERIAL.print("R");
-  DEBUG_INFORMATION_SERIAL.println(RED_component(test));
-  DEBUG_INFORMATION_SERIAL.print("G");
-  DEBUG_INFORMATION_SERIAL.println(GREEN_component(test));
-  DEBUG_INFORMATION_SERIAL.print("B: ");
+  DEBUG_INFORMATION_SERIAL.print("R: ");
+  DEBUG_INFORMATION_SERIAL.print(RED_component(test));
+  DEBUG_INFORMATION_SERIAL.print(" G: ");
+  DEBUG_INFORMATION_SERIAL.print(GREEN_component(test));
+  DEBUG_INFORMATION_SERIAL.print(" B: ");
   DEBUG_INFORMATION_SERIAL.println(BLUE_component(test));
   pixels.clear();
   pixels.show();
@@ -260,11 +261,11 @@ void FadePixelFromXToRed()
   uint32_t test = pixels.getPixelColor(1);
   Serial.println(test);
   Serial.println("RGB Values of first strip");
-  Serial.print("R");
-  Serial.println(RED_component(test));
-  Serial.print("G");
-  Serial.println(GREEN_component(test));
-  Serial.print("B: ");
+  Serial.print("R: ");
+  Serial.print(RED_component(test));
+  Serial.print(" G: ");
+  Serial.print(GREEN_component(test));
+  Serial.print(" B: ");
   Serial.println(BLUE_component(test));
 }
 

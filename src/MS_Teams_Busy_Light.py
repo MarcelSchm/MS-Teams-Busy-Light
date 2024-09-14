@@ -338,6 +338,9 @@ def write_status_to_busy_light(status):
         case "unknown":
             ser.write(b"Red")
             time.sleep(2)
+        case "presenceunknown":
+            ser.write(b"Red")
+            time.sleep(2)
         case "newactivity":
             # ser.write(b'Red')
             time.sleep(2)

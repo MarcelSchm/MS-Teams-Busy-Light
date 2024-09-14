@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['src\\MS_Teams_Busy_Light.py'],
+    ['C:\\Repository\\MS-Teams-Busy-Light\\src\\MS_Teams_Busy_Light.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -35,6 +35,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    version='TeamsVersionFile.txt',
-    icon=['images\\traffic_light.ico'],
+    version='C:\\Repository\\MS-Teams-Busy-Light\\TeamsVersionFile.txt',
+    icon=['C:\\Repository\\MS-Teams-Busy-Light\\images\\traffic_light.ico'],
 )

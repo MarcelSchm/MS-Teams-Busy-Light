@@ -4,7 +4,7 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 ## [v_1.3.0.3] - 2024-09-15
 
-[8981307](898130733d2cb1c0a3638b156cd2d49f9e7cbd54)...[9b356d6](9b356d6da3b762677d7e1b185343240e3a5fd9e6)
+[8981307](898130733d2cb1c0a3638b156cd2d49f9e7cbd54)...[842a397](842a397adfdb7c1eaeebaf20ec1369b282343be0)
 
 ### <!-- 0 -->🚀 Features
 
@@ -39,6 +39,8 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 - Added changelog File with auto generated content of commit messages of latest tag. ([7b4345b](7b4345b8325d7afeb8bd95ef8f6a04c0dbcb2379))
 
+- Added changelog File with auto generated content of commit messages of latest tag. ([cadd70e](cadd70ebc17e7f8dcb91a1aec93fc805f73db5b1))
+
 
 ### <!-- 8 -->⚙️ Miscellaneous Tasks
 
@@ -49,6 +51,8 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 - Fixed syntax erorrs ([3992a1c](3992a1cad0c7a188fa5ce1a45c32de571936b687))
 
 - Fixed changelog read with git cliff ([9b356d6](9b356d6da3b762677d7e1b185343240e3a5fd9e6))
+
+- Rewrote ps1 file to python file for github action ([842a397](842a397adfdb7c1eaeebaf20ec1369b282343be0))
 
 
 ## [v_1.3.0.2] - 2024-09-11

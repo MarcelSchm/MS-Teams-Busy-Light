@@ -34,7 +34,7 @@ jobs:
 
       - name: Generate changelog
         run: |
-          git cliff --output changelog_currentVersion.md
+          git cliff --tag ${{ github.ref }} --output changelog_currentVersion.md
 
       # - name: Build Executable File and Zip for release
       #   working-directory: ./src
@@ -57,8 +57,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: ${{ env.changelog }}
+          release_name:  ${{ github.ref }}
+          body_path: ${{ env.changelog }}
           prerelease: false
 
       # - name: Upload Release Assets

@@ -430,6 +430,18 @@ def check_new_or_modified_log(settings, last_checked_time):
     logging.info("check_new_or_modified_log - No new file or modification to it, since last check.")
     return False, latest_file_path,latest_file_mtime
 
+def read_from_serial():
+    """
+    Check for Log Messages of Arduino. Reads everything in serial buffer and logs it.
+    Args:
+
+    Returns:
+
+    """
+    if ser.in_waiting > 0:
+        line = ser.readlineln()
+        logging.info("read_from_serial - Received from serial: %s",line)
+
 def search_availability_in_log(log_file_path, availability_string, status_states):
     """
     Search for the last occurrence of the "availability" string in the log file given as argument and return the value of the last occurence.
@@ -485,5 +497,6 @@ if __name__ == "__main__":
             logging.info("Main loop - Status Value set to: %s",status)
         if not settings["debug"]["enabled"].lower() in ['true', 'yes', 'y']:
             write_status_to_busy_light(status)
+            read_from_serial()
         else:
             logging.info("While True loop - Bypassing write_status_to_busy_light due to debug mode.")

@@ -290,11 +290,22 @@ def write_initial_COM_Port():
     """
     logging.info("Writing initial COM port configuration...")
     COM_PORT = select_com_ports()
-    ser.port = COM_PORT
-    ser.baudrate = COM_BAUD
-    ser.open()
-    time.sleep(3)
-    ser.write(b"White")
+    try:
+        #ser = serial.Serial()
+        ser.port = COM_PORT
+        ser.baudrate = COM_BAUD
+        ser.open()
+        time.sleep(3)
+        ser.write(b"White\r\n")
+        time.sleep(3)
+        #ser.flush()  # Ensure the buffer is flushed after writing
+        logging.info("Initial COM port configuration written successfully.")
+    except serial.SerialException as e:
+        logging.error("Failed to initialize COM port %s: %s", COM_PORT, e)
+    except PermissionError as e:
+        logging.error("No permission to access COM port %s: %s", COM_PORT, e)
+    except Exception as e:
+        logging.error("An unexpected error occurred: %s", e)
 
 
 def write_status_to_busy_light(status):
@@ -309,47 +320,55 @@ def write_status_to_busy_light(status):
     logging.info("write_status_to_busy_light - Writing status %s to busy light...",status)
     match status:
         case "available":
-            ser.write(b"Green")
+            ser.flush()
+            test=len('Green'.encode('utf-8'))
+            test2= ser.write('Green\r\n'.encode('utf-8'))
+            logging.info("write_status_to_busy_light - test %s to busy light...",test)
+            logging.info("write_status_to_busy_light - test2 %s to busy light...",test2)
             time.sleep(2)
             ser.flush()
         case "busy":
-            ser.write(b"Red")
+            ser.flush()
+            ser.write(b"Red\r\n")
             time.sleep(2)
             ser.flush()
         case "inameeting":
-            ser.write(b"Red")
+            ser.flush()
+            ser.write(b"Red\r\n")
             time.sleep(2)
             ser.flush()
         case "onthephone":
-            ser.write(b"Red")
+            ser.flush()
+            ser.write(b"Red\r\n")
             time.sleep(2)
             ser.flush()
         case "donotdisturb":
-            ser.write(b"Red")
+            ser.flush()
+            ser.write(b"Red\r\n")
             time.sleep(2)
             ser.flush()
         case "berightback":
-            ser.write(b"Yellow")
+            ser.write(b"Yellow\r\n")
             time.sleep(2)
             ser.flush()
         case "presenting":
-            ser.write(b"Red")
+            ser.write(b"Red\r\n")
             time.sleep(2)
             ser.flush()
         case "away":
-            ser.write(b"Yellow")
+            ser.write(b"Yellow\r\n")
             time.sleep(2)
             ser.flush()
         case "offline":
-            ser.write(b"Yellow")
+            ser.write(b"Yellow\r\n")
             time.sleep(2)
             ser.flush()
         case "unknown":
-            ser.write(b"Red")
+            ser.write(b"Red\r\n")
             time.sleep(2)
             ser.flush()
         case "presenceunknown":
-            ser.write(b"Red")
+            ser.write(b"Red\r\n")
             time.sleep(2)
             ser.flush()
         case "newactivity":
@@ -357,23 +376,23 @@ def write_status_to_busy_light(status):
             time.sleep(2)
             ser.flush()
         case "connectionerror":
-            ser.write(b"Red")
+            ser.write(b"Red\r\n")
             time.sleep(2)
             ser.flush()
         case "nonetwork":
-            ser.write(b"Red")
+            ser.write(b"Red\r\n")
             time.sleep(2)
             ser.flush()
         case "initialize":
-            ser.write(b"White")
+            ser.write(b"White\r\n")
             time.sleep(2)
             ser.flush()
         case "outdated":
-            ser.write(b"Green")
+            ser.write(b"Green\r\n")
             time.sleep(2)
             ser.flush()
         case "incomingcall":
-            ser.write(b"BlinkRed")
+            ser.write(b"BlinkRed\r\n")
             time.sleep(2)
             ser.flush()
         case _:
@@ -455,7 +474,7 @@ def read_from_serial():
     Returns:
 
     """
-    while ser.in_waiting > 0:
+    if ser.in_waiting > 0:
         line = ser.readline()
         logging.info("read_from_serial - Received from serial: %s",line)
 
@@ -497,6 +516,7 @@ def search_availability_in_log(log_file_path, availability_string, status_states
     return last_value.lower()
 
 if __name__ == "__main__":
+
     timestamp = datetime.now()
     settings = load_settings("MS_Teams_Settings.ini")
     configure_logging(settings) # activates debug logs according to .ini file

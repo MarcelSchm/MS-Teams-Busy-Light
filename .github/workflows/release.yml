@@ -58,7 +58,7 @@ jobs:
         with:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
-          body_path: ${{ steps.read_changelog.outputs.changelog }}
+          body_path: changelog_currentVersion.md
           prerelease: false
 
       # - name: Upload Release Assets

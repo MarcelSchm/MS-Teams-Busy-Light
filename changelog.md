@@ -4,7 +4,7 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 ## [v_1.3.0.3] - 2024-09-15
 
-[8981307](898130733d2cb1c0a3638b156cd2d49f9e7cbd54)...[9241520](9241520711d2fc6b83c66a9f9fdd19763e8b375e)
+[8981307](898130733d2cb1c0a3638b156cd2d49f9e7cbd54)...[e06c1e1](e06c1e1ac724d8105407abbb5c9e34f4f0f658e5)
 
 ### <!-- 0 -->🚀 Features
 
@@ -48,6 +48,8 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 - Update body_path to body in release.yml ([9241520](9241520711d2fc6b83c66a9f9fdd19763e8b375e))
 
+- Update body_path to use direct file name ([e06c1e1](e06c1e1ac724d8105407abbb5c9e34f4f0f658e5))
+
 
 ### <!-- 3 -->📚 Documentation
 
@@ -82,6 +84,8 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 - Added changelog File with auto generated content of commit messages of latest tag. ([9f71a16](9f71a1642f1d7fdc939b26946724823a9eb0a6aa))
 
 - Added changelog File with auto generated content of commit messages of latest tag. ([6ba07de](6ba07de53dd160619002a986a5d48e89c54ab8c2))
+
+- Added changelog File with auto generated content of commit messages of latest tag. ([a3470fe](a3470fe26680172aa4b55c979c6e4422a1a66140))
 
 
 ### <!-- 8 -->⚙️ Miscellaneous Tasks

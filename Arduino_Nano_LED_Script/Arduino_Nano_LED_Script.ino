@@ -102,7 +102,7 @@ void setup()
   // pixels.clear();  // Set all pixel colors to 'off'
   SetAllPixelToColor(255, 255, 255);
   pixels.show(); // Send the updated pixel colors to the hardware.
-  DEBUG_INFORMATION_SERIAL.println(" Version: 1.3.0.3  - Setup done, Arduino initialized. Waiting for Serial input......");
+  DEBUG_INFORMATION_SERIAL.println(" Version: 1.3.0.4  - Setup done, Arduino initialized. Waiting for Serial input......");
 }
 
 void loop()
@@ -111,10 +111,13 @@ void loop()
   if (Serial.available() > 0)
   {
     // read incoming serial data:
-    String inStr = Serial.readString();
+    String inStr = Serial.readStringUntil('\n');
+    Serial.flush();
     // inChar = inChar
     inStr.trim();
     inStr.toUpperCase();
+    DEBUG_WARNING_SERIAL.print("Read String before switch, trimmed and to Upper Case: ");
+    DEBUG_WARNING_SERIAL.println(inStr);
     switch (resolvebusyStatusString(inStr))
     {
     case RED:

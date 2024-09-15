@@ -40,6 +40,7 @@ jobs:
 
       - name: Run PowerShell script
         run: |
+          source .venv/bin/activate
           pwsh ./createNewTeamsBusyLightExe.ps1
 
       - name: Read changelog

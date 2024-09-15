@@ -32,6 +32,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Generate changelog
+        run: |
+          git cliff --output changelog_currentVersion.md
+
       - name: Build project
         working-directory: ./src
         run: |
@@ -46,7 +50,9 @@ jobs:
       - name: Read changelog
         id: read_changelog
         run: |
-           echo "changelog=$(cat changelog_currentVersion.md)" >> $GITHUB_ENV
+          echo "changelog<<EOF" >> $GITHUB_ENV
+          cat changelog_currentVersion.md >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
         continue-on-error: false
 
       - name: Create GitHub Release

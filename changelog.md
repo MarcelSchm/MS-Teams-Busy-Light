@@ -2,9 +2,9 @@
 
 All notable changes to the next MS Teams Presence Status Busy Light version are the following.
 
-## [v_1.3.0.3] - 2024-09-14
+## [pull] - 2024-09-15
 
-[8981307](898130733d2cb1c0a3638b156cd2d49f9e7cbd54)...[7cf2ee2](7cf2ee2634b26d7b6be1132baec55cbd0617e4de)
+[8981307](898130733d2cb1c0a3638b156cd2d49f9e7cbd54)...[a27d6d7](a27d6d7c4def02acbc55c85f61cb021909ed8fb4)
 
 ### <!-- 0 -->🚀 Features
 
@@ -21,6 +21,13 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 - Refactor createNewTeamsBusyLightExe.ps1 script, to match (hopefully) for github actions as well. ([7cc5f76](7cc5f7699ca52f2ee0aa4956a67fdbdb16c8a39b))
 
 - Refactor file paths in MS_Teams_Busy_Light.spec ([7cf2ee2](7cf2ee2634b26d7b6be1132baec55cbd0617e4de))
+
+- File paths in release.yml and activate virtualenv ([a27d6d7](a27d6d7c4def02acbc55c85f61cb021909ed8fb4))
+
+
+### <!-- 3 -->📚 Documentation
+
+- Added changelog File with auto generated content of commit messages of latest tag. ([65aee2c](65aee2cb23f1600538696b262e02dd014e4ac4ca))
 
 
 ### <!-- 8 -->⚙️ Miscellaneous Tasks

@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -46,7 +46,7 @@ jobs:
         working-directory: ./src
         run: |
           # Run your build script here
-          python createNewTeamsBusyLightExeForGithubActions.py
+          ./.venv/bin/python createNewTeamsBusyLightExeForGithubActions.py
 
       - name: Read changelog
         id: read_changelog

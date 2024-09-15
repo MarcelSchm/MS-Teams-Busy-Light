@@ -19,7 +19,7 @@ jobs:
           python-version: '3.x'
 
       - name: Activate virtualenv
-          run: |
+        run: |
             . .venv/bin/activate
             echo PATH=$PATH >> $GITHUB_ENV
 

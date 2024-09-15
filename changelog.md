@@ -2,9 +2,23 @@
 
 All notable changes to the next MS Teams Presence Status Busy Light version are the following.
 
+## [v_1.3.0.4] - 2024-09-15
+
+[bb7c180](bb7c18092fd755c4ccd334c955374a4fa6c611d8)...[6c5b56e](6c5b56e12c325460451c1a0bf115e554e545d69d)
+
+### <!-- 0 -->🚀 Features
+
+- Add function to read from serial buffer, for more debugging options for arduino ([3c9fc14](3c9fc14d65b8428e68c098851579a18ff4a69671))
+
+
+### <!-- 3 -->📚 Documentation
+
+- Update version number in version.conf for new debug functionality in logs ([6c5b56e](6c5b56e12c325460451c1a0bf115e554e545d69d))
+
+
 ## [v_1.3.0.3] - 2024-09-15
 
-[8981307](898130733d2cb1c0a3638b156cd2d49f9e7cbd54)...[eadb15b](eadb15bd649a69c1a8fa1d9bb2b974797823ab6a)
+[8981307](898130733d2cb1c0a3638b156cd2d49f9e7cbd54)...[bb7c180](bb7c18092fd755c4ccd334c955374a4fa6c611d8)
 
 ### <!-- 0 -->🚀 Features
 
@@ -90,6 +104,8 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 - Added changelog File with auto generated content of commit messages of latest tag. ([a3470fe](a3470fe26680172aa4b55c979c6e4422a1a66140))
 
 - Added changelog File with auto generated content of commit messages of latest tag. ([b7840aa](b7840aa04037f58c067d1993016e7570db0a1d7f))
+
+- Added changelog File with auto generated content of commit messages of latest tag. ([bb7c180](bb7c18092fd755c4ccd334c955374a4fa6c611d8))
 
 
 ### <!-- 8 -->⚙️ Miscellaneous Tasks

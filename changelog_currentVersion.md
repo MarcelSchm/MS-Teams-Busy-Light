@@ -4,7 +4,7 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 ## [v_1.3.0.3] - 2024-09-15
 
-[8981307](898130733d2cb1c0a3638b156cd2d49f9e7cbd54)...[2c38ce7](2c38ce70d6dc6d19500bf69f890d1f2c961faca4)
+[8981307](898130733d2cb1c0a3638b156cd2d49f9e7cbd54)...[a7e7e50](a7e7e504a6636a6ffde07308b05887d7eeb8c87b)
 
 ### <!-- 0 -->🚀 Features
 
@@ -34,6 +34,8 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 - Update createNewTeamsBusyLightExeForGithubActions.py ([2c38ce7](2c38ce70d6dc6d19500bf69f890d1f2c961faca4))
 
+- Update createNewTeamsBusyLightExeForGithubActions.py ([a7e7e50](a7e7e504a6636a6ffde07308b05887d7eeb8c87b))
+
 
 ### <!-- 3 -->📚 Documentation
 
@@ -56,6 +58,8 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 - Added changelog File with auto generated content of commit messages of latest tag. ([2958e62](2958e62535dd2415a2262f8915e7f0a4c9ea0783))
 
 - Added changelog File with auto generated content of commit messages of latest tag. ([a539e1b](a539e1b7878b5267a01a3e3deb4b8f73107c5039))
+
+- Added changelog File with auto generated content of commit messages of latest tag. ([2b4eaea](2b4eaea076b90da457f7d6a41affbbfb7aea2f55))
 
 
 ### <!-- 8 -->⚙️ Miscellaneous Tasks

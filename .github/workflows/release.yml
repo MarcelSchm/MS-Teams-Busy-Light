@@ -36,17 +36,11 @@ jobs:
         run: |
           git cliff --output changelog_currentVersion.md
 
-      - name: Build versionfile
-        working-directory: ./src
-        run: |
-          # Run your build script here
-          python create_versionfile.py
-      
       - name: Build Executable File and Zip for release
         working-directory: ./src
         run: |
           # Run your build script here
-          ./.venv/bin/python createNewTeamsBusyLightExeForGithubActions.py
+          python createNewTeamsBusyLightExeForGithubActions.py
 
       - name: Read changelog
         id: read_changelog

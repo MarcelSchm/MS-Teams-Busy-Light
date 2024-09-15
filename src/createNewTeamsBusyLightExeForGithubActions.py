@@ -73,7 +73,10 @@ def main():
 
     print("-- Starting to create MS Teams Busy Light executable --")
     remove_old_dist_folder(output_folder)
-    update_check_pip_manager(venv_path, pip_requirements)
+    
+    # Skip update_check_pip_manager if running in GitHub Actions
+    if not os.getenv('GITHUB_ACTIONS'):
+        update_check_pip_manager(venv_path, pip_requirements)
     create_version_file(create_versionfile_script)
     start_pyinstaller(pyinstaller_path, teams_py, icon_file, version_file, output_folder)
     copy_necessary_files(necessary_files, output_folder)

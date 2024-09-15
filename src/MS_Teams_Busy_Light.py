@@ -311,54 +311,71 @@ def write_status_to_busy_light(status):
         case "available":
             ser.write(b"Green")
             time.sleep(2)
+            ser.flush()
         case "busy":
             ser.write(b"Red")
             time.sleep(2)
+            ser.flush()
         case "inameeting":
             ser.write(b"Red")
             time.sleep(2)
+            ser.flush()
         case "onthephone":
             ser.write(b"Red")
             time.sleep(2)
+            ser.flush()
         case "donotdisturb":
             ser.write(b"Red")
             time.sleep(2)
+            ser.flush()
         case "berightback":
             ser.write(b"Yellow")
             time.sleep(2)
+            ser.flush()
         case "presenting":
             ser.write(b"Red")
             time.sleep(2)
+            ser.flush()
         case "away":
             ser.write(b"Yellow")
             time.sleep(2)
+            ser.flush()
         case "offline":
             ser.write(b"Yellow")
             time.sleep(2)
+            ser.flush()
         case "unknown":
             ser.write(b"Red")
             time.sleep(2)
+            ser.flush()
         case "presenceunknown":
             ser.write(b"Red")
             time.sleep(2)
+            ser.flush()
         case "newactivity":
             # ser.write(b'Red')
             time.sleep(2)
+            ser.flush()
         case "connectionerror":
             ser.write(b"Red")
             time.sleep(2)
+            ser.flush()
         case "nonetwork":
             ser.write(b"Red")
             time.sleep(2)
+            ser.flush()
         case "initialize":
             ser.write(b"White")
             time.sleep(2)
+            ser.flush()
         case "outdated":
             ser.write(b"Green")
             time.sleep(2)
+            ser.flush()
         case "incomingcall":
             ser.write(b"BlinkRed")
             time.sleep(2)
+            ser.flush()
         case _:
             msgbox(
                 msg="MS Teams Presence Status Script: The following Status is not yet known and needs to be added to the python Script: \n"
@@ -438,8 +455,8 @@ def read_from_serial():
     Returns:
 
     """
-    if ser.in_waiting > 0:
-        line = ser.readlineln()
+    while ser.in_waiting > 0:
+        line = ser.readline()
         logging.info("read_from_serial - Received from serial: %s",line)
 
 def search_availability_in_log(log_file_path, availability_string, status_states):

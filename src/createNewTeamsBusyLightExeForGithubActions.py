@@ -62,7 +62,6 @@ def main():
     current_dir = os.getcwd()
     output_folder = join_path(current_dir, "dist")
     venv_path = join_path(current_dir, ".venv")
-    pyinstaller_path = join_path(venv_path, 'Scripts', 'pyinstaller.exe') if os.name == 'nt' else join_path(venv_path, 'bin', 'pyinstaller')
     teams_py = join_path(current_dir, "src", "MS_Teams_Busy_Light.py")
     pip_requirements = join_path(current_dir, "requirements.txt")
     icon_file = join_path(current_dir, "images", "traffic_light.ico")
@@ -74,9 +73,11 @@ def main():
     if not os.getenv('GITHUB_ACTIONS'):
         create_versionfile_script = join_path(current_dir, "src", "create_versionfile.py")
         teams_py = join_path(current_dir, "src", "MS_Teams_Busy_Light.py")
+        pyinstaller_path = join_path(venv_path, 'Scripts', 'pyinstaller.exe')
     else:
         create_versionfile_script = join_path(current_dir, "create_versionfile.py")
         teams_py = join_path(current_dir, "MS_Teams_Busy_Light.py")
+        pyinstaller_path = join_path(venv_path, 'bin', 'pyinstaller')
 
 
     print("-- Starting to create MS Teams Busy Light executable --")

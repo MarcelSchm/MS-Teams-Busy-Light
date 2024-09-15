@@ -18,9 +18,13 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Create virtualenv
+        run: |
+            python -m venv .venv
+  
       - name: Activate virtualenv
         run: |
-            . .venv/bin/activate
+            source .venv/bin/activate
             echo PATH=$PATH >> $GITHUB_ENV
 
       - name: Install dependencies

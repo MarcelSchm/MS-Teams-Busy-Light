@@ -4,16 +4,23 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 ## [v_1.3.0.5] - 2024-10-06
 
-[11e0f28](11e0f28d84090bfa163faa33d631f5ece062d1b3)...[bac3ade](bac3adec0284c2005df6ef4fd14ebff4e572c7a3)
+[11e0f28](11e0f28d84090bfa163faa33d631f5ece062d1b3)...[dd25eb2](dd25eb26207a7bfcdea33bf2b66ba273bf980001)
 
 ### <!-- 1 -->🐛 Bug Fixes
 
 - Fixed an issue, where sometimes the status is empty, since new file was added but not yet a new status was written inside it. ([2eb378b](2eb378b4b43b8ba8a5396e42a4186f4f115a1fcd))
 
 
+### <!-- 3 -->📚 Documentation
+
+- Added changelog File with auto generated content of commit messages of latest tag. ([8ec0367](8ec0367d995dcefd424b6640fdeed015eab28ac4))
+
+
 ### <!-- 7 --> 👷 Build
 
 - Update version number to 1.3.0.5 ([bac3ade](bac3adec0284c2005df6ef4fd14ebff4e572c7a3))
+
+- Upgraded all packages to latest ([dd25eb2](dd25eb26207a7bfcdea33bf2b66ba273bf980001))
 
 
 ### <!-- 8 -->⚙️ Miscellaneous Tasks

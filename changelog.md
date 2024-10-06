@@ -4,16 +4,23 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 ## [v_1.3.0.5] - 2024-10-06
 
-[11e0f28](11e0f28d84090bfa163faa33d631f5ece062d1b3)...[bac3ade](bac3adec0284c2005df6ef4fd14ebff4e572c7a3)
+[11e0f28](11e0f28d84090bfa163faa33d631f5ece062d1b3)...[dd25eb2](dd25eb26207a7bfcdea33bf2b66ba273bf980001)
 
 ### <!-- 1 -->🐛 Bug Fixes
 
 - Fixed an issue, where sometimes the status is empty, since new file was added but not yet a new status was written inside it. ([2eb378b](2eb378b4b43b8ba8a5396e42a4186f4f115a1fcd))
 
 
+### <!-- 3 -->📚 Documentation
+
+- Added changelog File with auto generated content of commit messages of latest tag. ([8ec0367](8ec0367d995dcefd424b6640fdeed015eab28ac4))
+
+
 ### <!-- 7 --> 👷 Build
 
 - Update version number to 1.3.0.5 ([bac3ade](bac3adec0284c2005df6ef4fd14ebff4e572c7a3))
+
+- Upgraded all packages to latest ([dd25eb2](dd25eb26207a7bfcdea33bf2b66ba273bf980001))
 
 
 ### <!-- 8 -->⚙️ Miscellaneous Tasks
@@ -201,8 +208,7 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 -  ci:adjusted correct path ([23e2108](23e2108730c3df696e7f287e130852d6526f170f))
 
--  ci:adjusted release.yml for github action workflow for latest error messages
- ([edcbd9f](edcbd9fe8e9e8a5824528c9962b7de4e7765d343))
+-  ci:adjusted release.yml for github action workflow for latest error messages ([edcbd9f](edcbd9fe8e9e8a5824528c9962b7de4e7765d343))
 
 - Add PowerShell script to create new Teams Busy Light executable ([9474178](94741788fbd1b065c6eef0918bad49c16438c36f))
 
@@ -313,8 +319,7 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 ### <!-- 2 -->🚜 Refactor
 
-- Refactoring according to pylint
- ([25c6866](25c6866044b6d13987b72516cb9cccaf032f7b11))
+- Refactoring according to pylint ([25c6866](25c6866044b6d13987b72516cb9cccaf032f7b11))
 
 
 ## [v1.1.0] - 2024-01-14
@@ -327,8 +332,7 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 ### <!-- 1 -->🐛 Bug Fixes
 
-- Fixed bug that it shows red when someone writes
- ([2d4bc42](2d4bc42865670f914b1e76e3d36e39590bf4dff7))
+- Fixed bug that it shows red when someone writes ([2d4bc42](2d4bc42865670f914b1e76e3d36e39590bf4dff7))
 
 
 ## [release] - 2023-10-22
@@ -339,11 +343,9 @@ All notable changes to the next MS Teams Presence Status Busy Light version are 
 
 ### <!-- 1 -->🐛 Bug Fixes
 
-- Fixed link
- ([752b0f9](752b0f9c3e8060b99b74261fc4cde6160ed7ecc3))
+- Fixed link ([752b0f9](752b0f9c3e8060b99b74261fc4cde6160ed7ecc3))
 
-- Fixed formatting ( tab instead of spaces...)
- ([109611a](109611a1687dcaa7e2ec1f3125ad009631674a9f))
+- Fixed formatting ( tab instead of spaces...) ([109611a](109611a1687dcaa7e2ec1f3125ad009631674a9f))
 
 
 <!-- generated automatically by git-cliff  -->

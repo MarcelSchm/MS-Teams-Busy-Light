@@ -1,13 +1,10 @@
 name: Test Release Package
 
 on:
-  push:
-    tags:
-    #  - 'v_*.*.*'  # Matches tags like v_1.0.0.0, v_2.1.3.0, etc.
   workflow_dispatch:  # Allows manual triggering of the workflow
 
 jobs:
-   Checkout_and_install_dependencies:
+  Checkout_and_install_dependencies:
      runs-on: ubuntu-latest
 
      steps:
@@ -33,16 +30,37 @@ jobs:
   #         python -m pip install --upgrade pip
   #         pip install -r requirements.txt
   start_pyinstaller:
+    runs-on: ubuntu-latest
     steps: 
       - name: Create Executable
-      uses: sayyid5416/pyinstaller@v1
-      with:
-        python_ver: '3.12.0'
-        pyinstaller_ver: '>=6.10.0'
-        spec: 'MS_Teams_Busy_Light.spec'
-        requirements: 'requirements.txt'
-        upload_exe_with_name: 'MS Teams Presence Status Busy Light'
-        options: --onefile --icon=$iconFile --version-file="images/traffic_light.ico" --clean --windowed"
+        uses: sayyid5416/pyinstaller@v1
+        with:
+          python_ver: '3.12.0'
+          pyinstaller_ver: '>=6.10.0'
+          spec: 'MS_Teams_Busy_Light.spec'
+          requirements: 'requirements.txt'
+          upload_exe_with_name: 'MS Teams Presence Status Busy Light'
+          options: --onefile --icon=$iconFile --version-file="images/traffic_light.ico" --clean --windowed"
               
+      - name: Get Release ID
+        id: get_release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const release = await github.repos.getReleaseByTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag: 'github actions test release'
+            });
+            return release.data.id;
 
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: dist/MS_Teams_Busy_Light.exe  # Replace with the actual path to your executable
+          asset_name: MS_Teams_Busy_Light.exe  # Replace with the actual name of your executable
+          asset_content_type: application/octet-stream
 

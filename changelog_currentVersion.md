@@ -2,32 +2,27 @@
 
 All notable changes to the next MS Teams Presence Status Busy Light version are the following.
 
-## [v_1.3.0.4] - 2024-09-15
+## [v_1.3.0.5] - 2024-10-06
 
-[bb7c180](bb7c18092fd755c4ccd334c955374a4fa6c611d8)...[67c86d1](67c86d1cada6055faa57cff7e30be71afbaecf1a)
-
-### <!-- 0 -->🚀 Features
-
-- Add function to read from serial buffer, for more debugging options for arduino ([3c9fc14](3c9fc14d65b8428e68c098851579a18ff4a69671))
-
+[11e0f28](11e0f28d84090bfa163faa33d631f5ece062d1b3)...[bac3ade](bac3adec0284c2005df6ef4fd14ebff4e572c7a3)
 
 ### <!-- 1 -->🐛 Bug Fixes
 
-- Added serial flush to prevent wrong commands send to arduino sometimes ([9fc73a9](9fc73a9c688ec73bc3b754bfbbeeb435bbe5b0a8))
-
-- Fix serial input reading and flushing ([1115ba3](1115ba38f47fb8bec5f7ac8ba2016b101b23114b))
-, Version:1.3.0.4
-
-- Refactor serial port configuration and status writing ([67c86d1](67c86d1cada6055faa57cff7e30be71afbaecf1a))
+- Fixed an issue, where sometimes the status is empty, since new file was added but not yet a new status was written inside it. ([2eb378b](2eb378b4b43b8ba8a5396e42a4186f4f115a1fcd))
 
 
-### <!-- 3 -->📚 Documentation
+### <!-- 7 --> 👷 Build
 
-- Update version number in version.conf for new debug functionality in logs ([6c5b56e](6c5b56e12c325460451c1a0bf115e554e545d69d))
+- Update version number to 1.3.0.5 ([bac3ade](bac3adec0284c2005df6ef4fd14ebff4e572c7a3))
 
-- Added changelog File with auto generated content of commit messages of latest tag. ([1d5f8ea](1d5f8ea6b4e497439599374160e045bf546a649f))
 
-- Added changelog File with auto generated content of commit messages of latest tag. ([9961aba](9961aba1db755c477b628fe681f823e55f0681ec))
+### <!-- 8 -->⚙️ Miscellaneous Tasks
+
+- First try to build pyinstaller exe with github actions. ([aace967](aace967620db9587f4ecc526d4a25fd0e09db0da))
+
+- Fixed yaml workflow error ([77c8be2](77c8be2584e88b34b2b1345cfd5235de0cfeb490))
+
+- More bug fixes in github actions yaml. ([47b771e](47b771ea64220eec243dcabe980ba3095e833f4a))
 
 
 <!-- generated automatically by git-cliff  -->

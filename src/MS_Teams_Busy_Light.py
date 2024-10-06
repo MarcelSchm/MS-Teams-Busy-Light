@@ -530,7 +530,11 @@ if __name__ == "__main__":
         newLog,path,latest_file_mtime = check_new_or_modified_log(settings,timestamp)
         timestamp = latest_file_mtime
         if newLog:
+            tempStatus = status
             status = search_availability_in_log(path,settings["SearchString"],settings["StatusStates"])
+            if status not in settings["StatusStates"]:
+                logging.error("Main loop - Status Value %s read in log is not yet part of settings.ini",status)
+                status = tempStatus
             logging.info("Main loop - Status Value set to: %s",status)
         if not settings["debug"]["enabled"].lower() in ['true', 'yes', 'y']:
             write_status_to_busy_light(status)

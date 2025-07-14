@@ -2,34 +2,22 @@
 
 All notable changes to the next MS Teams Presence Status Busy Light version are the following.
 
-## [v_1.3.0.5] - 2024-10-06
+## [v_1.3.0.6] - 2025-07-14
 
-[11e0f28](11e0f28d84090bfa163faa33d631f5ece062d1b3)...[dd25eb2](dd25eb26207a7bfcdea33bf2b66ba273bf980001)
+[384e373](384e3730273a41aa9a7ea22c8994aa7aaf9cd90c)...[4b0e37a](4b0e37af2252113b9325c488f620ca0f73eba159)
 
 ### <!-- 1 -->🐛 Bug Fixes
 
-- Fixed an issue, where sometimes the status is empty, since new file was added but not yet a new status was written inside it. ([2eb378b](2eb378b4b43b8ba8a5396e42a4186f4f115a1fcd))
+- Return default value "unknown" in search_availability_in_log if no occurrence is found ([bbf872d](bbf872d295d81c29dfdd17dc7f6d3ffe5f88ea26))
 
-
-### <!-- 3 -->📚 Documentation
-
-- Added changelog File with auto generated content of commit messages of latest tag. ([8ec0367](8ec0367d995dcefd424b6640fdeed015eab28ac4))
+- Update version number to 1.3.0.6 in version.conf ([26f39e5](26f39e5e9d1828fa551795a3b8bf152327d8720a))
 
 
 ### <!-- 7 --> 👷 Build
 
-- Update version number to 1.3.0.5 ([bac3ade](bac3adec0284c2005df6ef4fd14ebff4e572c7a3))
+- Update package versions in requirements.txt ([7a8470b](7a8470b3219bedc7fc76d346f90f34f1dd55517e))
 
-- Upgraded all packages to latest ([dd25eb2](dd25eb26207a7bfcdea33bf2b66ba273bf980001))
-
-
-### <!-- 8 -->⚙️ Miscellaneous Tasks
-
-- First try to build pyinstaller exe with github actions. ([aace967](aace967620db9587f4ecc526d4a25fd0e09db0da))
-
-- Fixed yaml workflow error ([77c8be2](77c8be2584e88b34b2b1345cfd5235de0cfeb490))
-
-- More bug fixes in github actions yaml. ([47b771e](47b771ea64220eec243dcabe980ba3095e833f4a))
+- Add requirements.in file with initial package list ([4b0e37a](4b0e37af2252113b9325c488f620ca0f73eba159))
 
 
 <!-- generated automatically by git-cliff  -->

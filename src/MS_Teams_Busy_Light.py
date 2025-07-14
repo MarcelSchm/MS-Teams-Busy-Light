@@ -513,6 +513,7 @@ def search_availability_in_log(log_file_path, availability_string, status_states
                 break
     if last_value is None:
         logging.error("search_availability_in_log - No occurrence of %s found in file %s",search_string,log_file_path)
+        return "unknown"  # or return a default value like "unknown"
     return last_value.lower()
 
 if __name__ == "__main__":

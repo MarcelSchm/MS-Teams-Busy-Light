@@ -77,6 +77,10 @@ busyStatus resolvebusyStatusString(String input)
   {
     return OFFLINE;
   }
+  if (input == "BLINKRED")
+  {
+    return CALL;
+  }
   else
   {
     return UNDEFINED;
@@ -102,7 +106,7 @@ void setup()
   // pixels.clear();  // Set all pixel colors to 'off'
   SetAllPixelToColor(255, 255, 255);
   pixels.show(); // Send the updated pixel colors to the hardware.
-  DEBUG_INFORMATION_SERIAL.println(" Version: 1.3.0.4  - Setup done, Arduino initialized. Waiting for Serial input......");
+  DEBUG_INFORMATION_SERIAL.println(" Setup done, Arduino initialized. Waiting for Serial input......");
 }
 
 void loop()
@@ -174,6 +178,17 @@ void loop()
         blink(0,0,0);
         pixels.clear();
         previousState = OFFLINE;
+      }
+      break;
+    }
+    case CALL:
+    {
+      DEBUG_WARNING_SERIAL.println("Case: CALL");
+      if (previousState != CALL)
+      {
+        blink(255, 0, 0);
+        SetAllPixelToColor(255, 0, 0);
+        previousState = CALL;
       }
       break;
     }

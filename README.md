@@ -1,17 +1,14 @@
+# Contents
+
 - [MS Teams Busy Light](#ms-teams-busy-light)
 - [Hardware](#hardware)
 	- [Electronics](#electronics)
 - [Software](#software)
 	- [Installation as a User](#installation-as-a-user)
-	- [Installation as a developer](#installation-as-a-developer)
-		- [Installing Git](#installing-git)
-		- [Installing Visual Studio Code and Extensions](#installing-visual-studio-code-and-extensions)
-		- [Setup .venv in Visual Studio Code](#setup-venv-in-visual-studio-code)
-		- [Create new .exe](#create-new-exe)
-	- [How to get the presence status](#how-to-get-the-presence-status)
-		- [MS Teams OLD](#ms-teams-old)
-		- [MS Teams NEW](#ms-teams-new)
-		- [Teams Presence status](#teams-presence-status)
+	- [Developer setup and build](#developer-setup-and-build)
+	- [Settings](#settings)
+	- [Arduino setup and flashing](#arduino-setup-and-flashing)
+	- [New Teams presence status](#new-teams-presence-status)
 - [Results and Assembly](#results-and-assembly)
 	- [Assembly](#assembly)
 	- [Results](#results)
@@ -46,103 +43,87 @@ Find the Wiring Diagram of the Neopixel RGB Strips and the Arduino below. They w
 
 As a user you just need to download the latest version from [releases](https://github.com/MarcelSchm/MS-Teams-Busy-Light/releases) and run the .exe file. 
 
-## Installation as a developer
+## Developer setup and build
 
-If you want to participate in this development, you can check out the current state of development by
+The application is tested with Python 3.14. Install Git and Python 3.14, then clone
+the repository and create a virtual environment from PowerShell:
 
-### Installing Git
-
-open CMD or powershell and type:
-
-	winget install -e --id Git.Git
-
+```powershell
+git clone https://github.com/MarcelSchm/MS-Teams-Busy-Light.git
+cd MS-Teams-Busy-Light
+py -3.14 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+.\.venv\Scripts\python.exe -m pytest
 ```
-git clone https://github.com/MarcelSchm/MS-Teams-Busy-Light.git <your-repopath>
+
+`requirements.txt` contains only the application runtime dependencies.
+`requirements-dev.txt` also installs test and packaging tools. To build the
+Windows executable and ZIP package, run:
+
+```powershell
+.\createNewTeamsBusyLightExe.ps1
 ```
 
-### Installing Visual Studio Code and Extensions
+The build does not change Windows Defender settings by default. If Defender
+blocks the build, an administrator can opt in to a temporary exclusion for the
+`dist` folder with `-AllowDefenderExclusion`; the script removes it after the
+build, including when PyInstaller fails.
 
+The scripts in `experiments/` are unmaintained prototypes and are not part of
+the application or release build.
 
-open CMD or powershell and type:
+The release script checks local and remote tags and asks for confirmation
+before committing, tagging, and pushing. Preview the operation with
+`.\create_changelog_and_tag.ps1 -DryRun` or `-WhatIf`.
 
+## Settings
 
-	winget install -e --id Microsoft.VisualStudioCode
+`MS_Teams_Settings.ini` is stored next to the executable. It contains the Teams
+log-folder path, the log key to search for, recognized status names, and
+optional debug logging settings. The application currently supports only the
+new Teams log format; `newTeams` must remain `True`. In the INI file,
+`%%localappdata%%` is intentional: `configparser` uses `%%` to represent a
+literal percent sign before Windows expands the environment variable.
 
+## Arduino setup and flashing
 
-* Open Visual Studio Code.
-* Select _Extensions_ in the side menu icons.
-  * Search for _Python_ → Click Install.
-  * Search for _Pip Manager_ → Click Install.
-  * Search for _Markdown All in One_ → Click Install.
-* Click _File_ → _Open Workspace from File_.
-* Select _MS-Teams-Busy-Light.code-workspace_ from the repo path.
-* Hit <kbd>Enter</kbd>.
+1. Install the Arduino IDE and the **Adafruit NeoPixel** library using the
+   Library Manager.
+2. Open `Arduino_Nano_LED_Script/Arduino_Nano_LED_Script.ino`.
+3. Select the connected Arduino Nano and its COM port. Select the processor
+   variant that matches your Nano if the upload fails.
+4. Upload the sketch. The NeoPixel data line uses pin 6, the sketch is set for
+   16 LEDs, and serial communication runs at 9600 baud.
 
+The Python application and Arduino sketch must both be running for the light
+to reflect Teams presence. The `BLINKRED` serial command performs a red call
+blink, including when the light is already showing red.
 
-### Setup .venv in Visual Studio Code
+## New Teams presence status
 
-* Click <kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> and enter ``Create Environment``.
-* Select _Venv_ and hit <kbd>Enter</kbd>.
-* Select _requirements.txt_ install _Venv_ with the needed pip libraries.
+The application reads the newest matching log file from:
 
-### Create new .exe
+```text
+%LOCALAPPDATA%\Packages\MSTeams_8wekyb3d8bbwe\LocalCache\Microsoft\MSTeams\Logs
+```
 
-Just execute the the [Powershell Script](createNewTeamsBusyLightExe.ps1) in a powershell admin shell. 
+The legacy Teams `logs.txt` format is not supported. The status is read from
+log entries containing `availability:`. Common mappings are:
 
-## How to get the presence status
+| Teams status | Light |
+| --- | --- |
+| Available | Green |
+| Busy, In a meeting, In a call, Do not disturb, Presenting | Red |
+| Be right back, Away, Offline | Yellow |
+| Unknown, Connection error, No network | Red |
 
-There are different ways of fetching the presence status of teams. Microsoft provides the status of your account that 
-is used in Teams via the Graph API. This might come in handy for future versions of the busy light: 
-instead of just having one Hardware that represents your status in one color, you can split the LED to actually also show 
-the status of another colleague. Unfortunately, to access the Graph API, your organization needs to grant consent 
-for the organization so everybody can read their Teams status. Since my organization didn't want to grant consent, 
-I needed to find a workaround. If you might want to check it on your own hou can find some information on the documentation of
-[how to get presence using Graph API][6].
-One of them is the monitor the MS Teams log file on the local Harddrive.
+The Arduino accepts the `BLINKRED` serial command for an incoming-call blink.
+The current Teams log reader extracts `availability:` values; it does not yet
+decode separate call-control events such as `reportIncomingCall`.
 
-> [!NOTE]
-> This solution below only works for the OLD version of Microsoft Teams. The new version is on a different location, with some differences and limitations. Therefore, there will be an updated `MS-Teams-Settings.config` config setting file, that can be used to confige which version you want to use. 
-
-
-### MS Teams OLD
-The location of this file: 
-
-	C:\Users\%userprofile%\AppData\Roaming\Microsoft\Teams\logs.txt
-	
-Idea on what/how to read from the log file I got from [this repository][2].
-
-### MS Teams NEW
-The location of this file: 
-
-	C:\Users\%localappdata%\Packages\MSTeams_8wekyb3d8bbwe\LocalCache\Microsoft\MSTeams\Logs
-
-
-	
-### Teams Presence status
-The Log File contains several information. 
-Changes in Teams Presence status can be obtained from messages containing ```StatusIndicatorStateService: Added```, message containing information for Calls contain ```DeviceCallControlManager Desktop:```.
-This is the List of possible Teams Status that are available:
-(Main )
-
-| StatusName in Teams | StatusName in Log File  |  				Color 					| Command String send to Arduino |
-|:-------------------:|:-----------------------:|:-------------------------------------:|:------------------------------:|
-|    Available        |        Available        | 	:green_heart: green :green_heart: 	|			Green				 |
-|    Busy             |     Busy                | 	 :heart: red :heart:			    |			Red				 	 |
-|    In a meeting     | InAMeeting  			|	 :heart: red :heart:			    |			Red				 	 |
-|    In a call        |     OnThePhone          | 	 :heart: red :heart:			    |			Red				 	 |
-|    Do not disturb   | DoNotDisturb ,Presenting| 	 :heart: red :heart:			    |			Red				 	 |
-|    Be right back    |     BeRightBack         | :yellow_heart: yellow :yellow_heart:	|			Yellow				 |
-| 	 Away             |		Away				| :yellow_heart: yellow :yellow_heart:	|			Yellow				 |
-|	 Offline          |		Offline				| :yellow_heart: yellow :yellow_heart:	|			Yellow				 |
-| 		N/A			  | NewActivity				| 						N/A	 			|								 |
-| 		N/A			  | Unknown,ConnectionError,NoNetwork| :heart: red :heart:		 	|			Red				 	 |
-| 	'Calling' Window  | reportIncomingCall 		| :heart: red :heart:		 			|			BlinkRed				 	 |
-
-
-| Additional Status apart from Teams | 				Description 				  |  				Color 				  | Command String send to Arduino |
-|:----------------------------------:|:------------------------------------------:|:-------------------------------------:|:------------------------------:|
-|Established Connection				 | After successfully connecting to COM- Port | :white_heart: white :white_heart:	  |				White			   |
-| Outdated 				| Status information in Log file is older than start of script| :green_heart: green :green_heart: |				Green		       |	
+The Windows application version is maintained in `version.conf`; the Arduino
+startup message does not duplicate that version.
 
 
 # Results and Assembly

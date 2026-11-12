@@ -1,8 +1,9 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
 
 
 a = Analysis(
-    ['C:\\Repository\\MS-Teams-Busy-Light\\src\\MS_Teams_Busy_Light.py'],
+    [os.path.join(SPECPATH, 'src', 'MS_Teams_Busy_Light.py')],
     pathex=[],
     binaries=[],
     datas=[],
@@ -35,6 +36,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    version='C:\\Repository\\MS-Teams-Busy-Light\\TeamsVersionFile.txt',
-    icon=['C:\\Repository\\MS-Teams-Busy-Light\\images\\traffic_light.ico'],
+    version=os.path.join(SPECPATH, 'TeamsVersionFile.txt'),
+    icon=[os.path.join(SPECPATH, 'images', 'traffic_light.ico')],
 )

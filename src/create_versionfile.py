@@ -5,9 +5,6 @@ import sys
 import configparser
 
 
-versionNumber = "1.3.0" # Version scheme: major.minor.patch
-
-
 def createVersionFile():
     try: 
         versionConfig = configparser.ConfigParser()

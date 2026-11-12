@@ -1,4 +1,4 @@
-import regex
+import re
 from file_read_backwards import FileReadBackwards
 from os import path
 from easygui import *
@@ -13,7 +13,7 @@ while 1:
    try:
       with FileReadBackwards(LogFilePath, encoding="utf-8") as frb:
          for l in frb:
-            if not None == regex.search(regexPattern,l):
+            if not None == re.search(regexPattern,l):
                status= l.split("Added ")[1].split(' ')[0]
                #msgbox(status) 
                break       

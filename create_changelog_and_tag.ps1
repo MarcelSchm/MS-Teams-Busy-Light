@@ -9,8 +9,8 @@ $versionFile = Join-Path $PSScriptRoot "version.conf"
 $changelogFile = Join-Path $PSScriptRoot "changelog.md"
 $tagChangelogFile = Join-Path $PSScriptRoot "changelog_currentVersion.md"
 $unreleasedChangelogFile = Join-Path $PSScriptRoot "changelog_unreleased.md"
-$isWindows = [System.Environment]::OSVersion.Platform -eq [System.PlatformID]::Win32NT
-$localGitCliff = if ($isWindows) {
+$isWindowsPlatform = [System.Environment]::OSVersion.Platform -eq [System.PlatformID]::Win32NT
+$localGitCliff = if ($isWindowsPlatform) {
     Join-Path $PSScriptRoot ".venv\Scripts\git-cliff.exe"
 } else {
     Join-Path $PSScriptRoot ".venv/bin/git-cliff"

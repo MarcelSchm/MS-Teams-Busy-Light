@@ -77,9 +77,11 @@ The release script checks local and remote tags and asks for confirmation
 before committing, tagging, and pushing. Preview the operation with
 `.\create_changelog_and_tag.ps1 -DryRun` or `-WhatIf`.
 
-GitHub Actions runs tests on Ubuntu and publishes source-only releases; it
-does not build or attach a Windows executable. Use the local build script above
-to create the executable.
+GitHub Actions starts a release for a matching version tag, a `version.conf`
+change on `main`, or a manual dispatch. A version change or manual dispatch
+from `main` generates the changelog and creates/pushes the version tag if it
+does not already exist. Tests run on Ubuntu; the release package is built on a
+Windows runner and attached to the GitHub release automatically.
 
 ## Settings
 

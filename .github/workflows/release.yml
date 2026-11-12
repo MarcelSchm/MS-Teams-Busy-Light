@@ -3,70 +3,42 @@ name: Create Release
 on:
   push:
     tags:
-      - 'v_*.*.*'  # Matches tags like v_1.0.0.0, v_2.1.3.0, etc.
+      - 'v_*.*.*.*'
+
+permissions:
+  contents: write
 
 jobs:
-  create_release:
-    runs-on: ubuntu-latest
+  build-and-release:
+    runs-on: windows-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.14'
 
-      - name: Create virtualenv
-        run: |
-            python -m venv .venv
-  
-      - name: Activate virtualenv
-        run: |
-            source .venv/bin/activate
-            echo PATH=$PATH >> $GITHUB_ENV
-
-      - name: Install dependencies
+      - name: Install test dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install -r requirements-dev.txt
 
-      # - name: Generate changelog
-      #   run: |
-      #     git cliff --tag ${{ github.ref }} --output changelog_currentVersion.md
+      - name: Run tests
+        run: python -m pytest
 
-      # - name: Build Executable File and Zip for release
-      #   working-directory: ./src
-      #   run: |
-      #     # Run your build script here
-      #     python createNewTeamsBusyLightExeForGithubActions.py
+      - name: Build release package
+        shell: pwsh
+        run: ./createNewTeamsBusyLightExe.ps1
 
-      # - name: Read changelog
-      #   id: read_changelog
-      #   run: |
-      #     echo "changelog<<EOF" >> $GITHUB_ENV
-      #     cat changelog_currentVersion.md >> $GITHUB_ENV
-      #     echo "EOF" >> $GITHUB_ENV
-      #   continue-on-error: false
-
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Publish GitHub release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body_path: changelog_currentVersion.md
-          prerelease: false
-
-      # - name: Upload Release Assets
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: ./dist/MS_Teams_Busy_Light.zip
-      #     asset_name: MS_Teams_Busy_Light.zip
-      #     asset_content_type: application/zip
+          GH_TOKEN: ${{ github.token }}
+        shell: pwsh
+        run: |
+          gh release create "$env:GITHUB_REF_NAME" .\dist\MS_Teams_Busy_Light.zip `
+            --verify-tag `
+            --title "$env:GITHUB_REF_NAME" `
+            --notes-file changelog_currentVersion.md

@@ -6,15 +6,15 @@ param(
 $ErrorActionPreference = "Stop"
 
 $repoRoot = $PSScriptRoot
-$isWindows = [System.Environment]::OSVersion.Platform -eq [System.PlatformID]::Win32NT
+$isWindowsPlatform = [System.Environment]::OSVersion.Platform -eq [System.PlatformID]::Win32NT
 $outputFolder = Join-Path $repoRoot "dist"
 $venvPath = Join-Path $repoRoot ".venv"
-$venvPython = if ($isWindows) {
+$venvPython = if ($isWindowsPlatform) {
     Join-Path $venvPath "Scripts\python.exe"
 } else {
     Join-Path $venvPath "bin/python"
 }
-$pyInstallerPath = if ($isWindows) {
+$pyInstallerPath = if ($isWindowsPlatform) {
     Join-Path $venvPath "Scripts\pyinstaller.exe"
 } else {
     Join-Path $venvPath "bin/pyinstaller"
@@ -59,7 +59,7 @@ try {
 
     $defenderExclusionAdded = $false
     try {
-        if ($AllowDefenderExclusion -and $isWindows) {
+        if ($AllowDefenderExclusion -and $isWindowsPlatform) {
             if (-not (Get-Command Add-MpPreference -ErrorAction SilentlyContinue)) {
                 throw "Windows Defender cmdlets are unavailable; cannot add the requested exclusion."
             }

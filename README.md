@@ -59,7 +59,7 @@ py -3.14 -m venv .venv
 
 `requirements.txt` contains only the application runtime dependencies.
 `requirements-dev.txt` also installs test and packaging tools. To build the
-Windows executable and ZIP package, run:
+Windows executable and ZIP package locally, run:
 
 ```powershell
 .\createNewTeamsBusyLightExe.ps1
@@ -76,6 +76,10 @@ the application or release build.
 The release script checks local and remote tags and asks for confirmation
 before committing, tagging, and pushing. Preview the operation with
 `.\create_changelog_and_tag.ps1 -DryRun` or `-WhatIf`.
+
+GitHub Actions runs tests on Ubuntu and publishes source-only releases; it
+does not build or attach a Windows executable. Use the local build script above
+to create the executable.
 
 ## Settings
 

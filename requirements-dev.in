@@ -1,0 +1,8 @@
+-r requirements.in
+auto-py-to-exe
+git-cliff
+pip-review
+pip-tools
+pyinstaller
+pyinstaller-versionfile
+pytest

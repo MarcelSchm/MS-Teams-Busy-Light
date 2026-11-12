@@ -1,69 +1,110 @@
-# This Script creates a tag based on the current version information and creates 3 changelogs:
-# all changes, just the one of the latest tag and everything that is yet unreleased.
-# changelog of everything that is yet unreleased is just created, if you did not increment the version.
-# if you incremented it, it will automatically create a new tag with the tags changelog as well as the 
-# complete changelog and push it to origin.
+[CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = "High")]
+param(
+    [switch]$DryRun
+)
 
-#  Version File name
-$VERSION_FILE="version.conf"
+$ErrorActionPreference = "Stop"
 
-# name of whole changelog
-$CHANGELOG_FILE="changelog.md"
-
-# name of changelog of last tag
-$CHANGELOG_FILE_LAST_TAG="changelog_currentVersion.md"
-
-# name of changelog of unreleased
-$CHANGELOG_FILE_UNRELEASED="changelog_unreleased.md"
-
-$toolName = "git-cliff" # tool for auto generating changelogs, winget name
-# check if existing
-$toolCheck = winget list | Select-String $toolName
-
-if ($toolCheck) {
-    # check if latest version is installed, upgrade otherwise
-    winget upgrade $toolName --accept-package-agreements
+$versionFile = Join-Path $PSScriptRoot "version.conf"
+$changelogFile = Join-Path $PSScriptRoot "changelog.md"
+$tagChangelogFile = Join-Path $PSScriptRoot "changelog_currentVersion.md"
+$unreleasedChangelogFile = Join-Path $PSScriptRoot "changelog_unreleased.md"
+$isWindows = [System.Environment]::OSVersion.Platform -eq [System.PlatformID]::Win32NT
+$localGitCliff = if ($isWindows) {
+    Join-Path $PSScriptRoot ".venv\Scripts\git-cliff.exe"
 } else {
-    # not installed, install and restart to be able to use
-    winget install  $toolName --accept-package-agreements
-    Write-Output "Installed '$toolName' for you. restart of script needed, to progress further. please restart the script."
-    Write-Host $_
-    cmd /c 'pause'
-    break
+    Join-Path $PSScriptRoot ".venv/bin/git-cliff"
 }
 
-# Get Content of File
-$VersionContent = Get-Content $VERSION_FILE
+Push-Location $PSScriptRoot
+try {
+    if (Test-Path $localGitCliff) {
+        $gitCliff = $localGitCliff
+    } else {
+        $gitCliffCommand = Get-Command git-cliff -ErrorAction SilentlyContinue
+        if (-not $gitCliffCommand) {
+            throw "git-cliff is required. Install the development requirements before running this script."
+        }
+        $gitCliff = $gitCliffCommand.Source
+    }
 
-# Search for Version Name in File and store it
-$specificValue = $VersionContent | Select-String 'Number = (.*)' | ForEach-Object { $_.Matches.Groups.Value }
-$specificValue = $specificValue.GetValue(1)
+    $versionLine = Get-Content -LiteralPath $versionFile |
+        Select-String '^\s*Number\s*=\s*(\S+)\s*$' |
+        Select-Object -First 1
+    if (-not $versionLine -or $versionLine.Line -notmatch '^\s*Number\s*=\s*(\S+)\s*$') {
+        throw "Could not read the version number from $versionFile."
+    }
+    $tagName = "v_$($Matches[1])"
 
-#put string together for tag e.g. 'version_0.0.0.0'
-$TagName = "v_" + $specificValue
-$CurrentTags = git tag
+    $localTag = git tag --list $tagName | Where-Object { $_ -eq $tagName }
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to query local Git tags."
+    }
+    $remoteTag = git ls-remote --tags origin "refs/tags/$tagName"
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to query tags on the origin remote."
+    }
 
- #Write-Output $TagName
+    if ($localTag -or $remoteTag) {
+        if ($DryRun -or $WhatIfPreference) {
+            Write-Host "Tag $tagName already exists. Would update the unreleased changelog files only."
+            return
+        }
 
-# check if the current version in version file is already existing as a tag, otherwise create it
-if ($CurrentTags -match $TagName) {
-    git-cliff --unreleased  -o $CHANGELOG_FILE_UNRELEASED #writes changelog for all changes of unreleased
-    git cliff -o $CHANGELOG_FILE #writes everything to changelog for all changes 
-    Write-Output "The Version '$TagName' is already existing as a tag.`
-     Please increment the version number in '$VERSION_FILE' and try again.`
-     I wrote the current changes available for a tag to file '$CHANGELOG_FILE_UNRELEASED'."
-    Write-Host $_
-    cmd /c 'pause'
-    break
-} else {
-    Write-Output "The Version '$TagName' will be created as a tag."
-    # Set a tag for the unreleased changes, it doesn't have to be an existing tag and write them to changelog file
-    git-cliff --tag $TagName  --unreleased -o $CHANGELOG_FILE_LAST_TAG
-    git-cliff --tag $TagName -o $CHANGELOG_FILE
-    git stage $CHANGELOG_FILE_LAST_TAG
-    git stage $CHANGELOG_FILE
-    git commit -m "docs: :memo: added changelog File with auto generated content of commit messages of latest tag."
-    git tag -a "$TagName" -F "$CHANGELOG_FILE_LAST_TAG"
-    git push
-    git push --tag
+        & $gitCliff --unreleased --output $unreleasedChangelogFile
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to generate $unreleasedChangelogFile."
+        }
+        & $gitCliff --output $changelogFile
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to generate $changelogFile."
+        }
+        Write-Host "Tag $tagName already exists. Updated the unreleased changelog files; no commit or push was made."
+        return
+    }
+
+    $branchName = git branch --show-current
+    if ($LASTEXITCODE -ne 0 -or -not $branchName) {
+        throw "A checked-out branch is required to create and push a release."
+    }
+
+    if ($DryRun) {
+        Write-Host "Dry run: would generate changelogs, commit them, create tag $tagName, and push branch $branchName and that tag to origin."
+        return
+    }
+    if (-not $PSCmdlet.ShouldProcess("origin", "Commit changelogs, create tag $tagName, and push")) {
+        return
+    }
+
+    & $gitCliff --tag $tagName --unreleased --output $tagChangelogFile
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to generate $tagChangelogFile."
+    }
+    & $gitCliff --tag $tagName --output $changelogFile
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to generate $changelogFile."
+    }
+
+    git add -- $tagChangelogFile $changelogFile
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to stage generated changelogs."
+    }
+    git commit -m "docs: add generated changelogs for $tagName"
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to commit generated changelogs."
+    }
+    git tag -a $tagName -F $tagChangelogFile
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to create tag $tagName."
+    }
+    git push origin "HEAD:refs/heads/$branchName"
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to push branch $branchName."
+    }
+    git push origin $tagName
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to push tag $tagName."
+    }
+} finally {
+    Pop-Location
 }

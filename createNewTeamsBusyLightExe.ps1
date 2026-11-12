@@ -1,89 +1,97 @@
-# Check for PowerShell version 6 or higher
-if ($PSVersionTable.PSVersion.Major -lt 6) {
-  throw "This script requires PowerShell 6.0 or higher. Please update your PowerShell version."
+[CmdletBinding()]
+param(
+    [switch]$AllowDefenderExclusion
+)
+
+$ErrorActionPreference = "Stop"
+
+$repoRoot = $PSScriptRoot
+$isWindows = [System.Environment]::OSVersion.Platform -eq [System.PlatformID]::Win32NT
+$outputFolder = Join-Path $repoRoot "dist"
+$venvPath = Join-Path $repoRoot ".venv"
+$venvPython = if ($isWindows) {
+    Join-Path $venvPath "Scripts\python.exe"
+} else {
+    Join-Path $venvPath "bin/python"
 }
-
-$outputFolder =  Join-Path (Get-Location) "dist"
-$pyInstallerPath = if ($IsWindows) { Join-Path (Get-Location) ".\.venv\Scripts\pyinstaller.exe" } else { Join-Path (Get-Location) ".venv/bin/pyinstaller" }
-$pyActivateVenv = if ($IsWindows) { Join-Path (Get-Location) ".\.venv\Scripts\Activate.ps1" } else { Join-Path (Get-Location) ".venv/bin/activate" }
-$TeamsPy = Join-Path (Get-Location) "src/MS_Teams_Busy_Light.py"
-$CreateVersionfile = Join-Path (Get-Location) "src/create_versionfile.py"
-$pipRequirements = Join-Path (Get-Location) "requirements.txt"
-$iconFile = Join-Path (Get-Location) "images/traffic_light.ico"
-$versionFile = Join-Path (Get-Location) "TeamsVersionFile.txt"
-
-$necessaryFiles = @('README.md', 'LICENSE', 'MS_Teams_Settings.ini')
-
-function New-StaticZipFile {
-    Write-Host 'Creating new .zip file'
-
-    $Files = New-Object -TypeName 'System.Collections.ArrayList'
-    $buildPath = Join-Path (Get-Location) "dist"
-    $FolderItems = Get-ChildItem $buildPath -name
-    foreach ($item in $FolderItems) {
-        $Files.Add((Join-Path $buildPath $item))
-    }
-
-    $zipPath = Join-Path $buildPath "MS_Teams_Busy_Light.zip"
-    If (Test-Path -Path $zipPath -PathType Leaf) {
-        Write-Host 'Deleting existing MS_Teams_Busy_Light.zip file'
-        Remove-Item -Path $zipPath
-    }
-
-    Compress-Archive -Path $Files -DestinationPath $zipPath
-
-    Write-Host 'Finished creating new MS_Teams_Busy_Light.zip file'
+$pyInstallerPath = if ($isWindows) {
+    Join-Path $venvPath "Scripts\pyinstaller.exe"
+} else {
+    Join-Path $venvPath "bin/pyinstaller"
 }
+$specFile = Join-Path $repoRoot "MS_Teams_Busy_Light.spec"
+$versionFileScript = Join-Path $repoRoot "src\create_versionfile.py"
+$requirementsFile = Join-Path $repoRoot "requirements-dev.txt"
+$buildPath = $outputFolder
+$necessaryFiles = @("README.md", "LICENSE", "MS_Teams_Settings.ini")
 
-Write-Output "-- Starting to create MS Teams Busy Light 
- --`n`n"
-Write-Output "-- Removing old dist folder --`n`n"
-if (Test-Path $outputFolder) {
-    Remove-Item $outputFolder -Recurse -Force -Confirm:$false
-}
-Write-Output "-- Update/Check PIP Manager --`n`n"
+Push-Location $repoRoot
 try {
-    # Generate path to venv script
-    $venvScript = $pyActivateVenv
-    if ($IsWindows) {
-        & $venvScript
-    } else {
-        . $venvScript
+    if (-not (Test-Path $venvPython)) {
+        $pythonCommand = Get-Command python -ErrorAction Stop
+        & $pythonCommand.Source -m venv $venvPath
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to create the virtual environment."
+        }
     }
-    python -m pip install --upgrade pip
-    pip install -r $pipRequirements 
-    Write-Output "`n`n"
-    $errorCheck = $null
+
+    if (-not (Test-Path $requirementsFile)) {
+        throw "Missing $requirementsFile. Compile it from requirements-dev.in first."
+    }
+
+    & $venvPython -m pip install --upgrade pip
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to upgrade pip."
+    }
+    & $venvPython -m pip install -r $requirementsFile
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to install development requirements."
+    }
+
+    & $venvPython $versionFileScript
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to generate TeamsVersionFile.txt."
+    }
+
+    if (Test-Path $outputFolder) {
+        Remove-Item -LiteralPath $outputFolder -Recurse -Force
+    }
+
+    $defenderExclusionAdded = $false
     try {
-      $errorCheck = & python -c "import sys; sys.exit(1) if any('ERROR' in line.upper() for line in sys.stderr) else sys.exit(0)"
-    } catch {
-      $errorCheck = $_.Exception.Message
+        if ($AllowDefenderExclusion -and $isWindows) {
+            if (-not (Get-Command Add-MpPreference -ErrorAction SilentlyContinue)) {
+                throw "Windows Defender cmdlets are unavailable; cannot add the requested exclusion."
+            }
+            Write-Host "Temporarily excluding $buildPath from Windows Defender scanning."
+            Add-MpPreference -ExclusionPath $buildPath
+            $defenderExclusionAdded = $true
+        }
+
+        & $pyInstallerPath $specFile --noconfirm --clean --distpath $outputFolder
+        if ($LASTEXITCODE -ne 0) {
+            throw "PyInstaller failed with exit code $LASTEXITCODE."
+        }
+    } finally {
+        if ($defenderExclusionAdded) {
+            Remove-MpPreference -ExclusionPath $buildPath
+            Write-Host "Removed the temporary Windows Defender exclusion."
+        }
     }
-    if ($errorCheck) {
-      throw "Error occurred while handling Update/Check PIP Manager. Please resolve errors above and try again."
+
+    foreach ($file in $necessaryFiles) {
+        Copy-Item -LiteralPath (Join-Path $repoRoot $file) -Destination $outputFolder -Force
     }
-} 
-catch {
-    Write-Host $_
-    if ($IsWindows) {
-        cmd /c 'pause'
+
+    $zipPath = Join-Path $outputFolder "MS_Teams_Busy_Light.zip"
+    $archiveFiles = Get-ChildItem -LiteralPath $outputFolder -File |
+        Where-Object { $_.FullName -ne $zipPath } |
+        Select-Object -ExpandProperty FullName
+    if (-not $archiveFiles) {
+        throw "No build files were produced in $outputFolder."
     }
-    break
+    Compress-Archive -LiteralPath $archiveFiles -DestinationPath $zipPath -Force
+    Write-Host "Created $zipPath."
+} finally {
+    Pop-Location
 }
-Write-Output "`n`n-- Creating Version File --`n`n"
-python $CreateVersionfile
-Write-Output "`n`n-- Starting PyInstaller --`n`n"
-# Trying to start pyinstaller with -windowed option results in windows antivirus error messages. Therefore the folder you want to build the exe in will be setup as an exception
-$buildPath = Join-Path (Get-Location) "dist"
-if ($IsWindows) {
-    Add-MpPreference -ExclusionPath $buildPath
-}
-Start-Process -FilePath $pyInstallerPath -NoNewWindow -Wait -ArgumentList "$TeamsPy --onefile --icon=$iconFile --version-file=$versionFile --distpath $outputFolder --clean --windowed"
-if ($IsWindows) {
-    Remove-MpPreference -ExclusionPath $buildPath
-}
-Write-Output "`n`n-- Copying necessary files for execution --`n`n"
-foreach ($file in $necessaryFiles) {
-    Copy-Item $file -Destination $outputFolder -Force
-}
-New-StaticZipFile
